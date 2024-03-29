@@ -37,7 +37,7 @@ onMounted(() => {
       v-model:title="noteTitle"
     />
     <div
-      class="max-w-2xl max-h-screen rounded-md mx-auto mt-8 flex flex-col relative"
+      class="max-w-3xl max-h-screen rounded-md mx-auto mt-8 flex flex-col relative"
     >
       <img
         v-if="isLoadingNotes"
@@ -46,7 +46,10 @@ onMounted(() => {
         alt=""
       />
       <ErrorHandler v-if="hasErrors" :errors="errors" />
-      <div v-if="!isLoadingNotes && !hasErrors && hasNotes">
+      <div
+        class="flex gap-6 flex-wrap max-w-full"
+        v-if="!isLoadingNotes && !hasErrors && hasNotes"
+      >
         <NoteItem
           v-for="note in filtered"
           :key="note.id"
@@ -56,7 +59,7 @@ onMounted(() => {
           @toggle-done="toggleIsDone"
         />
       </div>
-      <div v-if="!hasNote && !isLoadingNotes && !hasNotes" class="text-center">
+      <div v-if="!hasNotes && !isLoadingNotes && !hasNotes" class="text-center">
         No notes available.
       </div>
     </div>

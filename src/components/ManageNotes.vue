@@ -35,7 +35,7 @@ const onAddNote = () => {
 
 <template>
   <div
-    class="max-w-2xl h-60 rounded-md shadow-lg mx-auto mt-8 flex flex-col justify-center items-center"
+    class="max-w-3xl h-60 rounded-md shadow-lg mx-auto mt-8 flex flex-col justify-center items-center"
   >
     <div class="w-80 flex flex-col">
       <input
