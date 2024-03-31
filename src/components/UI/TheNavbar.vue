@@ -10,7 +10,7 @@ import { RouterLink } from "vue-router";
       >Notes</RouterLink
     >
     <RouterLink class="no-underline text-white text-lg" :to="{ name: 'about' }"
-      >about</RouterLink
+      >About</RouterLink
     >
   </div>
 </template>

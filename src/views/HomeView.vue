@@ -15,10 +15,11 @@ const { filtered, filterOption, errors, hasNotes, hasErrors, isLoadingNotes } =
 const noteTitle = ref("");
 const inputContent = ref("");
 
-const add = () => {
+const add = (titleRef) => {
   addToNotes(noteTitle.value, inputContent.value);
   inputContent.value = "";
   noteTitle.value = "";
+  titleRef.focus();
 };
 
 onMounted(() => {
@@ -39,16 +40,14 @@ onMounted(() => {
     <div
       class="max-w-3xl max-h-screen rounded-md mx-auto mt-8 flex flex-col relative"
     >
-      <img
-        v-if="isLoadingNotes"
-        class="w-6 h-6 mx-auto"
-        src="../assets/spinners/spinner.gif"
-        alt=""
-      />
       <ErrorHandler v-if="hasErrors" :errors="errors" />
-      <div
-        class="flex gap-6 flex-wrap max-w-full"
-        v-if="!isLoadingNotes && !hasErrors && hasNotes"
+      <!-- <div
+        class="grid grid-cols-2 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 gap-4"
+      > -->
+      <TransitionGroup
+        name="list"
+        tag="ul"
+        class="grid grid-cols-2 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 gap-4"
       >
         <NoteItem
           v-for="note in filtered"
@@ -58,8 +57,12 @@ onMounted(() => {
           @remove-note="removeFromNotes"
           @toggle-done="toggleIsDone"
         />
-      </div>
-      <div v-if="!hasNotes && !isLoadingNotes && !hasNotes" class="text-center">
+      </TransitionGroup>
+      <!-- </div> -->
+      <div
+        v-if="!hasErrors && !isLoadingNotes && !hasNotes"
+        class="text-center font-bold text-xl"
+      >
         No notes available.
       </div>
     </div>

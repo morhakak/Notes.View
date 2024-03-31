@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .custom-filter-button {
-  @apply bg-blue-500 hover:bg-blue-300 text-white py-2 px-4 w-2/4 cursor-pointer disabled:bg-blue-300;
+  @apply text-white flex justify-center items-center py-2 px-4 w-2/4 cursor-pointer transition-transform duration-300 hover:scale-95;
 }
 
 .tooltip-btn {
@@ -20,4 +20,12 @@
 
 .input {
   @apply border-b border-transparent focus:border-black focus:outline-none mb-4;
+}
+
+.note-item {
+  @apply h-60 p-4 flex justify-between items-center shadow-lg mb-10 hover:cursor-pointer hover:shadow-lg transition-transform duration-300 hover:scale-105;
+}
+
+.action-icon {
+  @apply text-lg transition-transform duration-300 hover:scale-110 hover:cursor-pointer;
 }
