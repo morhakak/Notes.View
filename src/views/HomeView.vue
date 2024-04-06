@@ -15,11 +15,11 @@ const { filtered, filterOption, errors, hasNotes, hasErrors, isLoadingNotes } =
 const noteTitle = ref("");
 const inputContent = ref("");
 
-const add = (titleRef) => {
+const add = () => {
   addToNotes(noteTitle.value, inputContent.value);
   inputContent.value = "";
   noteTitle.value = "";
-  titleRef.focus();
+  // titleRef.focus();
 };
 
 onMounted(() => {

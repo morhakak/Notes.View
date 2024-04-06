@@ -1,18 +1,19 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import axios from "axios";
+import { BASE_URL } from "../config";
 
 export const useNoteStore = defineStore("note", () => {
   const notes = ref([]);
   const filterOption = ref("all");
-  const API_BASE_URL = "https://localhost:7264/api/notes";
+  const baseUrl = `${BASE_URL}/notes`;
   const errors = ref([]);
   const isLoadingNotes = ref(false);
 
   const loadNotes = async () => {
     try {
       isLoadingNotes.value = true;
-      const response = await axios.get(API_BASE_URL);
+      const response = await axios.get(baseUrl);
       notes.value = response.data;
     } catch (error) {
       errors.value.push(error.message);
@@ -24,7 +25,7 @@ export const useNoteStore = defineStore("note", () => {
 
   const removeFromNotes = async (noteId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/${noteId}`);
+      const response = await axios.delete(`${baseUrl}/${noteId}`);
       if (response.status >= 200 && response.status < 300) {
         notes.value = notes.value.filter((note) => note.id !== noteId);
       }
@@ -38,7 +39,7 @@ export const useNoteStore = defineStore("note", () => {
       [propertyName]: toggleValue,
     };
     try {
-      await axios.put(`${API_BASE_URL}/${note.id}/${propertyName}`, updateNote);
+      await axios.put(`${baseUrl}/${note.id}/${propertyName}`, updateNote);
       note[propertyName] = toggleValue;
     } catch (error) {
       console.error(`Error toggling ${propertyName}:`, error);
@@ -72,7 +73,7 @@ export const useNoteStore = defineStore("note", () => {
       content,
     };
     try {
-      const response = await axios.post(API_BASE_URL, note);
+      const response = await axios.post(baseUrl, note);
       if (response.status === 200) {
         notes.value.push(response.data);
       }

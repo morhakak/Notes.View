@@ -12,7 +12,6 @@ const title = defineModel("title", { required: true });
 
 const showTooltip = ref(false);
 const addButtonRef = ref(null);
-const titleRef = ref(null);
 
 const store = useNoteStore();
 const { hasNotes, hasLikedNotes, hasDoneNotes, isLoadingNotes } =
@@ -28,7 +27,7 @@ const onMouseLeave = () => {
 };
 
 const onAddNote = () => {
-  emit("addNote", titleRef);
+  emit("addNote");
 };
 
 const disabledClasses = computed(() => ({
@@ -49,7 +48,6 @@ const disabledClasses = computed(() => ({
           placeholder="Note title"
           class="input"
           maxlength="50"
-          ref="titleRef"
         />
         <input
           @keyup.enter.prevent="onAddNote"
