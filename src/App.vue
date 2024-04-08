@@ -1,6 +1,13 @@
 <script setup>
 import { RouterView } from "vue-router";
 import TheNavbar from "./components/UI/TheNavbar.vue";
+import { useAuthStore } from "./stores/authStore.js";
+import { onMounted } from "vue";
+
+const store = useAuthStore();
+onMounted(() => {
+  store.getTokenFromStorage();
+});
 </script>
 
 <template>

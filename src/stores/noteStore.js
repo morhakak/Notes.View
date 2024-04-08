@@ -1,9 +1,12 @@
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../config";
+import { useAuthStore } from "./authStore";
 
 export const useNoteStore = defineStore("note", () => {
+  const authStore = useAuthStore();
+  const { token } = storeToRefs(authStore);
   const notes = ref([]);
   const filterOption = ref("all");
   const baseUrl = `${BASE_URL}/notes`;
@@ -13,7 +16,12 @@ export const useNoteStore = defineStore("note", () => {
   const loadNotes = async () => {
     try {
       isLoadingNotes.value = true;
-      const response = await axios.get(baseUrl);
+      console.log("**** token ***: ", token.value);
+      const response = await axios.get(baseUrl, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      });
       notes.value = response.data;
     } catch (error) {
       errors.value.push(error.message);

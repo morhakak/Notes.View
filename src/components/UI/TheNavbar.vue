@@ -1,5 +1,18 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
+import { useAuthStore } from "../../stores/authStore.js";
+import { storeToRefs } from "pinia";
+
+const store = useAuthStore();
+const { isLoggedIn } = storeToRefs(store);
+console.log("is logged in", isLoggedIn.value);
+
+const router = useRouter();
+const logoutUser = () => {
+  store.logout();
+  router.push({ name: "login" });
+  console.log("is logged in", isLoggedIn.value);
+};
 </script>
 
 <template>
@@ -11,6 +24,25 @@ import { RouterLink } from "vue-router";
     >
     <RouterLink class="no-underline text-white text-lg" :to="{ name: 'about' }"
       >About</RouterLink
+    >
+    <RouterLink
+      v-if="!isLoggedIn"
+      class="no-underline text-white text-lg"
+      :to="{ name: 'login' }"
+      >Login</RouterLink
+    >
+    <RouterLink
+      v-if="!isLoggedIn"
+      class="no-underline text-white text-lg"
+      :to="{ name: 'register' }"
+      >Register</RouterLink
+    >
+    <RouterLink
+      v-if="isLoggedIn"
+      @click="logoutUser"
+      class="no-underline text-white text-lg"
+      :to="{ name: 'login' }"
+      >Logout</RouterLink
     >
   </div>
 </template>

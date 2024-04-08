@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../config";
 
@@ -8,6 +8,7 @@ export const useAuthStore = defineStore("auth", () => {
   const loginUrl = `${BASE_URL}/auth/login`;
   const isLoading = ref(false);
   const errors = ref([]);
+  const token = ref(localStorage.getItem("notesAppToken") || null);
 
   const register = async (email, password) => {
     isLoading.value = true;
@@ -35,27 +36,51 @@ export const useAuthStore = defineStore("auth", () => {
 
   const login = async (email, password) => {
     isLoading.value = true;
-    const loginRequest = {
-      email,
-      password,
-    };
-    const userName = email.split("@")[0];
     try {
+      const loginRequest = { email, password };
       const response = await axios.post(loginUrl, loginRequest);
-      if (response.status === 200) {
-        return `${userName} logged in sucessfully!`;
+
+      if (response.status >= 200 && response.status < 300) {
+        const responseData = response.data;
+        token.value = responseData;
+        localStorage.setItem("notesAppToken", token.value);
+        console.log("Successful login:", responseData);
+        return responseData;
+      } else {
+        errors.value.push(response.data);
+        console.error("Login failed with status:", response.status);
+        return null;
       }
     } catch (error) {
-      return `Incorrect email or password`;
+      errors.value.push(error.message);
+      console.error("Error during login:", error.message);
+      return null;
     } finally {
-      isLoading.value = true;
+      isLoading.value = false;
     }
   };
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    token.value = null;
+  };
+
+  const isLoggedIn = computed(() => {
+    return !!token.value;
+  });
+
+  function getTokenFromStorage() {
+    token.value = localStorage.getItem("notesAppToken");
+  }
 
   return {
     register,
     login,
+    logout,
+    getTokenFromStorage,
+    isLoggedIn,
     isLoading,
     errors,
+    token,
   };
 });
