@@ -8,26 +8,21 @@ export const useAuthStore = defineStore("auth", () => {
   const loginUrl = `${BASE_URL}/auth/login`;
   const isLoading = ref(false);
   const errors = ref([]);
-  const token = ref(localStorage.getItem("notesAppToken") || null);
+  const LOCAL_STORAGE_KEY = "notesAppToken";
+  const token = ref(localStorage.getItem(LOCAL_STORAGE_KEY) || null);
 
   const register = async (email, password) => {
     isLoading.value = true;
     try {
-      const registerRequest = { email, password };
-      const response = await axios.post(registerUrl, registerRequest);
-
+      const response = await axios.post(registerUrl, { email, password });
       if (response.status >= 200 && response.status < 300) {
-        const responseData = response.data;
-        console.log("Registration successful:", responseData);
-        return responseData;
+        return response.data;
       } else {
         errors.value.push(response.data);
-        console.error("Registration failed with status:", response.status);
         return null;
       }
     } catch (error) {
-      errors.value.push(error.message);
-      console.error("Error during registration:", error.message);
+      errors.value.push(error.response.data);
       return null;
     } finally {
       isLoading.value = false;
@@ -37,23 +32,17 @@ export const useAuthStore = defineStore("auth", () => {
   const login = async (email, password) => {
     isLoading.value = true;
     try {
-      const loginRequest = { email, password };
-      const response = await axios.post(loginUrl, loginRequest);
-
+      const response = await axios.post(loginUrl, { email, password });
       if (response.status >= 200 && response.status < 300) {
-        const responseData = response.data;
-        token.value = responseData;
-        localStorage.setItem("notesAppToken", token.value);
-        console.log("Successful login:", responseData);
-        return responseData;
+        token.value = response.data;
+        localStorage.setItem(LOCAL_STORAGE_KEY, token.value);
+        return response.data;
       } else {
         errors.value.push(response.data);
-        console.error("Login failed with status:", response.status);
         return null;
       }
     } catch (error) {
-      errors.value.push(error.message);
-      console.error("Error during login:", error.message);
+      errors.value.push(error.response.data);
       return null;
     } finally {
       isLoading.value = false;
@@ -61,7 +50,7 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
     token.value = null;
   };
 
@@ -70,7 +59,7 @@ export const useAuthStore = defineStore("auth", () => {
   });
 
   function getTokenFromStorage() {
-    token.value = localStorage.getItem("notesAppToken");
+    token.value = localStorage.getItem(LOCAL_STORAGE_KEY);
   }
 
   return {

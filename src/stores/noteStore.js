@@ -16,7 +16,6 @@ export const useNoteStore = defineStore("note", () => {
   const loadNotes = async () => {
     try {
       isLoadingNotes.value = true;
-      console.log("**** token ***: ", token.value);
       const response = await axios.get(baseUrl, {
         headers: {
           Authorization: `Bearer ${token.value}`,
@@ -33,7 +32,11 @@ export const useNoteStore = defineStore("note", () => {
 
   const removeFromNotes = async (noteId) => {
     try {
-      const response = await axios.delete(`${baseUrl}/${noteId}`);
+      const response = await axios.delete(`${baseUrl}/${noteId}`, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      });
       if (response.status >= 200 && response.status < 300) {
         notes.value = notes.value.filter((note) => note.id !== noteId);
       }
@@ -47,7 +50,11 @@ export const useNoteStore = defineStore("note", () => {
       [propertyName]: toggleValue,
     };
     try {
-      await axios.put(`${baseUrl}/${note.id}/${propertyName}`, updateNote);
+      await axios.put(`${baseUrl}/${note.id}/${propertyName}`, updateNote, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      });
       note[propertyName] = toggleValue;
     } catch (error) {
       console.error(`Error toggling ${propertyName}:`, error);
@@ -81,7 +88,11 @@ export const useNoteStore = defineStore("note", () => {
       content,
     };
     try {
-      const response = await axios.post(baseUrl, note);
+      const response = await axios.post(baseUrl, note, {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      });
       if (response.status === 200) {
         notes.value.push(response.data);
       }

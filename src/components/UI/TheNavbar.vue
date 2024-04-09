@@ -19,7 +19,10 @@ const logoutUser = () => {
   <div
     class="flex w-full items-center justify-center gap-6 h-20 shasow-md bg-blue-500"
   >
-    <RouterLink class="no-underline text-white text-lg" :to="{ name: 'home' }"
+    <RouterLink
+      v-if="isLoggedIn"
+      class="no-underline text-white text-lg"
+      :to="{ name: 'home' }"
       >Notes</RouterLink
     >
     <RouterLink class="no-underline text-white text-lg" :to="{ name: 'about' }"

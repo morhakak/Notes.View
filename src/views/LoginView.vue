@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -70,6 +70,10 @@ const authStore = useAuthStore();
 const { login } = authStore;
 const { isLoading, errors } = storeToRefs(authStore);
 const router = useRouter();
+
+onMounted(() => {
+  errors.value = [];
+});
 
 const email = ref("");
 const password = ref("");
