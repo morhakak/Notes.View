@@ -11,7 +11,6 @@ const router = useRouter();
 const logoutUser = () => {
   store.logout();
   router.push({ name: "login" });
-  console.log("is logged in", isLoggedIn.value);
 };
 </script>
 

@@ -12,29 +12,46 @@ export const useNoteStore = defineStore("note", () => {
   const baseUrl = `${BASE_URL}/notes`;
   const errors = ref([]);
   const isLoadingNotes = ref(false);
+  const BEARER = "Bearer";
 
   const loadNotes = async () => {
     try {
       isLoadingNotes.value = true;
       const response = await axios.get(baseUrl, {
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `${BEARER} ${token.value}`,
         },
       });
       notes.value = response.data;
     } catch (error) {
-      errors.value.push(error.message);
+      handleError(error);
       console.error("Error loading notes:", error);
     } finally {
       isLoadingNotes.value = false;
     }
   };
 
+  function handleError(error) {
+    let errorCode = error.response.status;
+    console.log(error.response);
+    if (errorCode === 401) {
+      errors.value.push(
+        "Its seems like you don't have permission to see the notes."
+      );
+    } else if (errorCode === 500) {
+      errors.value.push(
+        "Unable to load notes: server error, please try again."
+      );
+    } else {
+      errors.value.push("Something went wrong, try again later.");
+    }
+  }
+
   const removeFromNotes = async (noteId) => {
     try {
       const response = await axios.delete(`${baseUrl}/${noteId}`, {
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `${BEARER} ${token.value}`,
         },
       });
       if (response.status >= 200 && response.status < 300) {
@@ -52,7 +69,7 @@ export const useNoteStore = defineStore("note", () => {
     try {
       await axios.put(`${baseUrl}/${note.id}/${propertyName}`, updateNote, {
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `${BEARER} ${token.value}`,
         },
       });
       note[propertyName] = toggleValue;
@@ -90,7 +107,7 @@ export const useNoteStore = defineStore("note", () => {
     try {
       const response = await axios.post(baseUrl, note, {
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `${BEARER} ${token.value}`,
         },
       });
       if (response.status === 200) {

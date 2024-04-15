@@ -47,7 +47,7 @@
       class="text-red-500 text-sm font-semibold absolute px-2 bottom-12"
       v-show="errors.length > 0"
     >
-      Unable to register user: {{ errors[0] }}
+      Login failed: {{ errors[0] }}
     </p>
     <p class="text-center text-xs">
       Don't have an account yet?
@@ -106,6 +106,8 @@ const loginUser = async () => {
   var response = await login(email.value, password.value);
   if (response) {
     router.push({ name: "home" });
+  } else {
+    router.push({ name: "login" });
   }
 };
 </script>

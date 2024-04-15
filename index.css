@@ -3,19 +3,7 @@
 @tailwind utilities;
 
 .custom-filter-button {
-  @apply text-white flex justify-center items-center py-2 px-4 w-2/4 cursor-pointer transition-transform duration-300 hover:scale-95;
-}
-
-.tooltip-btn {
-  @apply relative;
-}
-
-.tooltip {
-  @apply invisible bg-black text-white text-center rounded py-2 px-4 absolute z-10 bottom-full left-1/2 -translate-x-1/2;
-}
-
-.tooltip-btn:hover .tooltip {
-  @apply visible;
+  @apply rounded-3xl text-white flex justify-center items-center py-2 px-4 w-2/4 cursor-pointer transition-transform duration-300 hover:scale-95;
 }
 
 .input {

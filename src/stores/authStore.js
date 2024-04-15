@@ -34,9 +34,9 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       const response = await axios.post(loginUrl, { email, password });
       if (response.status >= 200 && response.status < 300) {
-        token.value = response.data;
+        token.value = response.data.data;
         localStorage.setItem(LOCAL_STORAGE_KEY, token.value);
-        return response.data;
+        return response.data.data;
       } else {
         errors.value.push(response.data);
         return null;

@@ -6,25 +6,14 @@ import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
 import { faCheckSquare as regularSquare } from "@fortawesome/free-regular-svg-icons";
 
 const emit = defineEmits(["addNote", "all", "liked", "done"]);
-
 const content = defineModel("content");
 const title = defineModel("title", { required: true });
 
-const showTooltip = ref(false);
 const addButtonRef = ref(null);
 
 const store = useNoteStore();
 const { hasNotes, hasLikedNotes, hasDoneNotes, isLoadingNotes } =
   storeToRefs(store);
-
-const onMouseHover = () => {
-  if (!content.value) showTooltip.value = true;
-  else showTooltip.value = true;
-};
-
-const onMouseLeave = () => {
-  showTooltip.value = false;
-};
 
 const onAddNote = () => {
   emit("addNote");
@@ -59,7 +48,7 @@ const disabledClasses = computed(() => ({
         />
         <button
           @click.prevent="onAddNote"
-          class="bg-blue-500 hover:bg-blue-300 text-white py-2 px-4 relative cursor-pointer"
+          class="rounded-2xl bg-blue-500 hover:bg-blue-300 text-white py-2 px-4 relative cursor-pointer"
           :class="disabledClasses"
           :disabled="!content"
           @mouseover="onMouseHover"
@@ -72,7 +61,6 @@ const disabledClasses = computed(() => ({
             src="../assets/spinners/spinner.gif"
             alt=""
           />
-          <span v-if="showTooltip" class="tooltip">Write a note...</span>
           Add Note
         </button>
         <div class="flex mt-4 gap-6">

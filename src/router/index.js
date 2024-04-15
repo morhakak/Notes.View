@@ -24,6 +24,10 @@ const router = createRouter({
       name: "register",
       component: () => import("../views/RegiterView.vue"),
     },
+    {
+      path: "/:catchAll(.*)",
+      redirect: "/",
+    },
   ],
 });
 
