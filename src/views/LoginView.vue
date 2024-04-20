@@ -1,3 +1,55 @@
+<script setup>
+import { computed, onMounted, ref } from "vue";
+import { useAuthStore } from "@/stores/authStore.js";
+import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+
+const authStore = useAuthStore();
+const { login } = authStore;
+const { isLoading, errors } = storeToRefs(authStore);
+const router = useRouter();
+
+onMounted(() => {
+  errors.value = [];
+});
+
+const email = ref("");
+const password = ref("");
+
+function validateEmail(value) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(value);
+}
+
+function validateInput(input) {
+  const regex = /^(?!.*(.)\1{5})[\s\S]{6}$/;
+  return regex.test(input);
+}
+
+const computedEmail = computed(() => {
+  return !validateEmail(email.value) ? "Please enter a valid email" : "";
+});
+
+const computedPassword = computed(() => {
+  return !validateInput(password.value)
+    ? "Password legnth should be 6 characters"
+    : "";
+});
+
+const isValidInputs = computed(() => {
+  return validateEmail(email.value) && validateInput(password.value);
+});
+
+const loginUser = async () => {
+  var response = await login(email.value, password.value);
+  if (response) {
+    router.push({ name: "home" });
+  } else {
+    router.push({ name: "login" });
+  }
+};
+</script>
+
 <template>
   <div
     class="max-w-md mx-auto shadow-lg mt-10 rounded-md md:max-w-lg lg:max-w-xl p-4 relative"
@@ -59,58 +111,6 @@
     </p>
   </div>
 </template>
-
-<script setup>
-import { computed, onMounted, ref } from "vue";
-import { useAuthStore } from "@/stores/authStore.js";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
-
-const authStore = useAuthStore();
-const { login } = authStore;
-const { isLoading, errors } = storeToRefs(authStore);
-const router = useRouter();
-
-onMounted(() => {
-  errors.value = [];
-});
-
-const email = ref("");
-const password = ref("");
-
-function validateEmail(value) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(value);
-}
-
-function validateInput(input) {
-  const regex = /^(?!.*(.)\1{5})[\s\S]{6}$/;
-  return regex.test(input);
-}
-
-const computedEmail = computed(() => {
-  return !validateEmail(email.value) ? "Please enter a valid email" : "";
-});
-
-const computedPassword = computed(() => {
-  return !validateInput(password.value)
-    ? "Password legnth should be 6 characters"
-    : "";
-});
-
-const isValidInputs = computed(() => {
-  return validateEmail(email.value) && validateInput(password.value);
-});
-
-const loginUser = async () => {
-  var response = await login(email.value, password.value);
-  if (response) {
-    router.push({ name: "home" });
-  } else {
-    router.push({ name: "login" });
-  }
-};
-</script>
 
 <style scoped>
 .top {

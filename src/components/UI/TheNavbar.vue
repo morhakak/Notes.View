@@ -2,10 +2,12 @@
 import { RouterLink, useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/authStore.js";
 import { storeToRefs } from "pinia";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faNoteSticky } from "@fortawesome/free-solid-svg-icons";
 
 const store = useAuthStore();
-const { isLoggedIn } = storeToRefs(store);
-console.log("is logged in", isLoggedIn.value);
+const { isLoggedIn, userName } = storeToRefs(store);
 
 const router = useRouter();
 const logoutUser = () => {
@@ -16,36 +18,51 @@ const logoutUser = () => {
 
 <template>
   <div
-    class="flex w-full items-center justify-center gap-6 h-20 shasow-md bg-blue-500"
+    class="flex w-full h-20 shadow-lg bg-blue-500 items-center justify-between"
   >
-    <RouterLink
-      v-if="isLoggedIn"
-      class="no-underline text-white text-lg"
-      :to="{ name: 'home' }"
-      >Notes</RouterLink
-    >
-    <RouterLink class="no-underline text-white text-lg" :to="{ name: 'about' }"
-      >About</RouterLink
-    >
-    <RouterLink
-      v-if="!isLoggedIn"
-      class="no-underline text-white text-lg"
-      :to="{ name: 'login' }"
-      >Login</RouterLink
-    >
-    <RouterLink
-      v-if="!isLoggedIn"
-      class="no-underline text-white text-lg"
-      :to="{ name: 'register' }"
-      >Register</RouterLink
-    >
-    <RouterLink
-      v-if="isLoggedIn"
-      @click="logoutUser"
-      class="no-underline text-white text-lg"
-      :to="{ name: 'login' }"
-      >Logout</RouterLink
-    >
+    <p class="text-white text-3xl ml-4">
+      <font-awesome-icon :icon="faNoteSticky" class="text-white" /> Notes
+    </p>
+    <div class="flex gap-4">
+      <RouterLink
+        v-if="isLoggedIn"
+        class="no-underline text-white text-lg"
+        :to="{ name: 'home' }"
+        >My Notes</RouterLink
+      >
+      <RouterLink
+        class="no-underline text-white text-lg"
+        :to="{ name: 'about' }"
+        >About</RouterLink
+      >
+    </div>
+    <div class="flex gap-6 mr-4">
+      <p v-if="userName" class="text-white text-md">
+        <font-awesome-icon :icon="faUser" class="text-white" /> Hi
+        {{ userName }}
+      </p>
+      <RouterLink
+        v-if="!isLoggedIn"
+        class="no-underline text-white text-md"
+        :to="{ name: 'login' }"
+        >Login</RouterLink
+      >
+      <RouterLink
+        v-if="!isLoggedIn"
+        class="no-underline text-white text-md"
+        :to="{ name: 'register' }"
+        >Register</RouterLink
+      >
+      <RouterLink
+        v-if="isLoggedIn"
+        @click="logoutUser"
+        class="no-underline text-white text-md"
+        :to="{ name: 'login' }"
+      >
+        <font-awesome-icon :icon="faDoorOpen" class="text-white" />
+        Logout
+      </RouterLink>
+    </div>
   </div>
 </template>
 

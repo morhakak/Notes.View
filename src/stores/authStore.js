@@ -1,20 +1,22 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import axios from "axios";
-import { BASE_URL } from "../config";
+import { config } from "../config";
+import { jwtDecode } from "jwt-decode";
 
 export const useAuthStore = defineStore("auth", () => {
-  const registerUrl = `${BASE_URL}/auth/register`;
-  const loginUrl = `${BASE_URL}/auth/login`;
   const isLoading = ref(false);
   const errors = ref([]);
-  const LOCAL_STORAGE_KEY = "notesAppToken";
-  const token = ref(localStorage.getItem(LOCAL_STORAGE_KEY) || null);
+  const token = ref(localStorage.getItem(config.LOCAL_STORAGE_KEY) || null);
+  const userName = ref(null);
 
   const register = async (email, password) => {
     isLoading.value = true;
     try {
-      const response = await axios.post(registerUrl, { email, password });
+      const response = await axios.post(config.REGISTER_URL, {
+        email,
+        password,
+      });
       if (response.status >= 200 && response.status < 300) {
         return response.data;
       } else {
@@ -32,17 +34,26 @@ export const useAuthStore = defineStore("auth", () => {
   const login = async (email, password) => {
     isLoading.value = true;
     try {
-      const response = await axios.post(loginUrl, { email, password });
+      const response = await axios.post(config.LOGIN_URL, { email, password });
       if (response.status >= 200 && response.status < 300) {
         token.value = response.data.data;
-        localStorage.setItem(LOCAL_STORAGE_KEY, token.value);
+        const decodedToken = jwtDecode(token.value);
+        userName.value =
+          decodedToken[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+          ].split("@")[0];
+        localStorage.setItem(config.LOCAL_STORAGE_KEY, token.value);
         return response.data.data;
       } else {
         errors.value.push(response.data);
         return null;
       }
     } catch (error) {
-      errors.value.push(error.response.data);
+      if (!error.response) {
+        errors.value.push(`${error.message}, please try again later`);
+      }
+      console.error("Response error:", error.response.data);
+      errors.value.push(`${error.response.data}`);
       return null;
     } finally {
       isLoading.value = false;
@@ -50,8 +61,10 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const logout = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.removeItem(config.LOCAL_STORAGE_KEY);
     token.value = null;
+    errors.value = [];
+    userName.value = null;
   };
 
   const isLoggedIn = computed(() => {
@@ -59,7 +72,7 @@ export const useAuthStore = defineStore("auth", () => {
   });
 
   function getTokenFromStorage() {
-    token.value = localStorage.getItem(LOCAL_STORAGE_KEY);
+    token.value = localStorage.getItem(config.LOCAL_STORAGE_KEY);
   }
 
   return {
@@ -71,5 +84,6 @@ export const useAuthStore = defineStore("auth", () => {
     isLoading,
     errors,
     token,
+    userName,
   };
 });

@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import axios from "axios";
-import { BASE_URL } from "../config";
+import { config } from "../config";
 import { useAuthStore } from "./authStore";
 
 export const useNoteStore = defineStore("note", () => {
@@ -9,7 +9,7 @@ export const useNoteStore = defineStore("note", () => {
   const { token } = storeToRefs(authStore);
   const notes = ref([]);
   const filterOption = ref("all");
-  const baseUrl = `${BASE_URL}/notes`;
+  const baseUrl = `${config.BASE_URL}/notes`;
   const errors = ref([]);
   const isLoadingNotes = ref(false);
   const BEARER = "Bearer";
@@ -58,6 +58,7 @@ export const useNoteStore = defineStore("note", () => {
         notes.value = notes.value.filter((note) => note.id !== noteId);
       }
     } catch (error) {
+      errors.value.push("Something went wrong, try again later.");
       console.error("Error removing note:", error);
     }
   };
@@ -74,6 +75,7 @@ export const useNoteStore = defineStore("note", () => {
       });
       note[propertyName] = toggleValue;
     } catch (error) {
+      errors.value.push("Something went wrong, try again later.");
       console.error(`Error toggling ${propertyName}:`, error);
     }
   };
@@ -114,6 +116,7 @@ export const useNoteStore = defineStore("note", () => {
         notes.value.push(response.data);
       }
     } catch (error) {
+      errors.value.push("Something went wrong, try again later.");
       console.error("Error adding note:", error);
     } finally {
       await loadNotes();

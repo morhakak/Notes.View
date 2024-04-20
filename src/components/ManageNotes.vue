@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useNoteStore } from "../stores/noteStore.js";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
@@ -10,10 +10,23 @@ const content = defineModel("content");
 const title = defineModel("title", { required: true });
 
 const addButtonRef = ref(null);
+const doneButtonRef = ref(null);
 
 const store = useNoteStore();
-const { hasNotes, hasLikedNotes, hasDoneNotes, isLoadingNotes } =
+const { hasNotes, hasLikedNotes, hasDoneNotes, isLoadingNotes, filterOption } =
   storeToRefs(store);
+
+watch([filterOption, hasDoneNotes], ([newFilterOpt, newHasDoneNotes]) => {
+  if (newFilterOpt === "done" && newHasDoneNotes === false) {
+    emit("all");
+  }
+});
+
+watch([filterOption, hasLikedNotes], ([newFilterOpt, newhasLikedNotes]) => {
+  if (newFilterOpt === "liked" && newhasLikedNotes === false) {
+    emit("all");
+  }
+});
 
 const onAddNote = () => {
   emit("addNote");
@@ -73,15 +86,12 @@ const disabledClasses = computed(() => ({
           </button>
           <button
             @click.prevent="$emit('done')"
+            ref="doneButtonRef"
             class="custom-filter-button bg-green-500 hover:bg-green-400 disabled:bg-green-300"
             :disabled="!hasNotes || (hasNotes && !hasDoneNotes)"
           >
             Done
-            <font-awesome-icon
-              :icon="regularSquare"
-              @click.stop="$emit('toggleDone', note.id)"
-              class="text-lg ml-2"
-            />
+            <font-awesome-icon :icon="regularSquare" class="text-lg ml-2" />
           </button>
           <button
             @click.prevent="$emit('liked')"

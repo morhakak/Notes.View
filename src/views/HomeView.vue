@@ -19,7 +19,6 @@ const add = () => {
   addToNotes(noteTitle.value, inputContent.value);
   inputContent.value = "";
   noteTitle.value = "";
-  // titleRef.focus();
 };
 
 onMounted(() => {
