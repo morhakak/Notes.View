@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -16,13 +16,19 @@ onMounted(() => {
 const email = ref("");
 const password = ref("");
 
+watch(errors, () => {
+  setTimeout(() => {
+    errors.value = [];
+  }, 5000);
+});
+
 function validateEmail(value) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(value);
 }
 
 function validateInput(input) {
-  const regex = /^(?!.*(.)\1{5})[\s\S]{6}$/;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,}$/;
   return regex.test(input);
 }
 

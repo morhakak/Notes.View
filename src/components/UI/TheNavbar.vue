@@ -37,7 +37,7 @@ const logoutUser = () => {
       >
     </div>
     <div class="flex gap-6 mr-4">
-      <p v-if="userName" class="text-white text-md">
+      <p v-if="isLoggedIn && userName" class="text-white text-md">
         <font-awesome-icon :icon="faUser" class="text-white" /> Hi
         {{ userName }}
       </p>

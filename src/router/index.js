@@ -22,7 +22,7 @@ const router = createRouter({
     {
       path: "/register",
       name: "register",
-      component: () => import("../views/RegiterView.vue"),
+      component: () => import("../views/RegisterView.vue"),
     },
     {
       path: "/:catchAll(.*)",

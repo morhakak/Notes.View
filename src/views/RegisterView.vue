@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -15,13 +15,19 @@ const showPasswordTooltip = ref(false);
 const email = ref("");
 const password = ref("");
 
+watch(errors, () => {
+  setTimeout(() => {
+    errors.value = [];
+  }, 5000);
+});
+
 function validateEmail(value) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(value);
 }
 
 function validateInput(input) {
-  const regex = /^(?!.*(.)\1{5})[\s\S]{6}$/;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,}$/;
   return regex.test(input);
 }
 
@@ -71,7 +77,7 @@ const registerUser = async () => {
             :icon="faInfoCircle"
             @mouseover="showPasswordTooltip = true"
             @mouseleave="showPasswordTooltip = false"
-            class="text-lg"
+            class="text-md text-blue-500"
           />
           <input
             class="h-10 flex-1 mr-8 ml-2 focus:outline-none"
@@ -117,24 +123,36 @@ const registerUser = async () => {
         >
       </p>
     </div>
-    <div
-      v-show="showPasswordTooltip"
-      class="absolute bg-white shadow-md p-2 rounded-md text-sm top-24 left-32 z-10"
-    >
-      <p>Password requirements:</p>
-      <ul>
-        <li>At least 8 characters</li>
-        <li>At least one uppercase letter</li>
-        <li>At least One lowercase letter</li>
-        <li>At least One number</li>
-        <li>At least One special character</li>
-      </ul>
-    </div>
+    <Transition name="fade">
+      <div
+        v-show="showPasswordTooltip"
+        class="absolute bg-white shadow-md p-2 rounded-md text-sm top-24 left-32 z-10"
+      >
+        <p>Password requirements:</p>
+        <ul>
+          <li>- At least 8 characters</li>
+          <li>- At least one uppercase letter</li>
+          <li>- At least one lowercase letter</li>
+          <li>- At least one number</li>
+          <li>- At least one special character</li>
+        </ul>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <style scoped>
 .top {
   top: 90px;
+}
+
+/* Opacity transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
