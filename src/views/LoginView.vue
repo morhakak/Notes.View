@@ -76,7 +76,7 @@ const passwordVisibilityIcon = computed(() => {
           class="text-md text-blue-500 mb-4 absolute"
         />
         <input
-          class="h-10 mb-4 focus:outline-none pl-6 w-full"
+          class="h-10 mb-4 focus:outline-none pl-6 w-full border-b-2"
           v-model="email"
           @input="validateEmail"
           type="email"
@@ -95,7 +95,7 @@ const passwordVisibilityIcon = computed(() => {
           class="text-md text-blue-500 mb-4 absolute"
         />
         <input
-          class="h-10 mb-4 focus:outline-none pl-6 pr-6 w-full"
+          class="h-10 mb-4 focus:outline-none pl-6 pr-6 w-full border-b-2"
           v-model="password"
           :type="isPasswordVisible ? 'input' : 'password'"
           placeholder="Password"

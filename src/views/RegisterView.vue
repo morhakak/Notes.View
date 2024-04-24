@@ -110,7 +110,7 @@ const passwordVisibilityIcon = computed(() => {
           />
         </div>
         <p
-          class="text-red-500 text-xs absolute left-4 top-10"
+          class="text-red-500 text-xs absolute top-10"
           v-show="email.length > 0"
         >
           {{ computedEmail }}
