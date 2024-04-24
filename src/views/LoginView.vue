@@ -1,13 +1,20 @@
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
+import {
+  faEnvelope,
+  faLock,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const authStore = useAuthStore();
 const { login } = authStore;
 const { isLoading, errors } = storeToRefs(authStore);
 const router = useRouter();
+const isPasswordVisible = ref(false);
 
 onMounted(() => {
   errors.value = [];
@@ -15,12 +22,6 @@ onMounted(() => {
 
 const email = ref("");
 const password = ref("");
-
-watch(errors, () => {
-  setTimeout(() => {
-    errors.value = [];
-  }, 5000);
-});
 
 function validateEmail(value) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,11 +37,11 @@ const computedEmail = computed(() => {
   return !validateEmail(email.value) ? "Please enter a valid email" : "";
 });
 
-const computedPassword = computed(() => {
-  return !validateInput(password.value)
-    ? "Password legnth should be 6 characters"
-    : "";
-});
+// const computedPassword = computed(() => {
+//   return !validateInput(password.value)
+//     ? "Password legnth should be 6 characters"
+//     : "";
+// });
 
 const isValidInputs = computed(() => {
   return validateEmail(email.value) && validateInput(password.value);
@@ -54,6 +55,14 @@ const loginUser = async () => {
     router.push({ name: "login" });
   }
 };
+
+function togglePasswordVisibility() {
+  isPasswordVisible.value = !isPasswordVisible.value;
+}
+
+const passwordVisibilityIcon = computed(() => {
+  return isPasswordVisible.value ? faEye : faEyeSlash;
+});
 </script>
 
 <template>
@@ -61,31 +70,42 @@ const loginUser = async () => {
     class="max-w-md mx-auto shadow-lg mt-10 rounded-md md:max-w-lg lg:max-w-xl p-4 relative"
   >
     <form class="flex flex-col relative">
-      <input
-        class="h-10 mb-4 focus:outline-none"
-        v-model="email"
-        @input="validateEmail"
-        type="email"
-        placeholder="Your@email.com"
-      />
+      <div class="flex items-center relative">
+        <font-awesome-icon
+          :icon="faEnvelope"
+          class="text-md text-blue-500 mb-4 absolute"
+        />
+        <input
+          class="h-10 mb-4 focus:outline-none pl-6 w-full"
+          v-model="email"
+          @input="validateEmail"
+          type="email"
+          placeholder="Email Address"
+        />
+      </div>
       <p
         class="text-red-500 text-xs absolute left-0 top-10"
         v-show="email.length > 0"
       >
         {{ computedEmail }}
       </p>
-      <input
-        class="h-10 mb-4 focus:outline-none"
-        v-model="password"
-        type="password"
-        placeholder="YourSecretPa$$word"
-      />
-      <p
-        class="text-red-500 text-xs absolute left-0 top"
-        v-show="password.length > 0"
-      >
-        {{ computedPassword }}
-      </p>
+      <div class="flex items-center relative">
+        <font-awesome-icon
+          :icon="faLock"
+          class="text-md text-blue-500 mb-4 absolute"
+        />
+        <input
+          class="h-10 mb-4 focus:outline-none pl-6 pr-6 w-full"
+          v-model="password"
+          :type="isPasswordVisible ? 'input' : 'password'"
+          placeholder="Password"
+        />
+        <font-awesome-icon
+          :icon="passwordVisibilityIcon"
+          @click="togglePasswordVisibility"
+          class="text-md text-blue-500 mb-4 absolute left"
+        />
+      </div>
       <button
         class="hover:cursor-pointer h-10 bg-blue-500 text-white mb-14 hover:bg-blue-300 disabled:bg-blue-200"
         :disabled="!isValidInputs"
@@ -121,5 +141,9 @@ const loginUser = async () => {
 <style scoped>
 .top {
   top: 90px;
+}
+
+.left {
+  left: 96%;
 }
 </style>

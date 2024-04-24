@@ -41,18 +41,21 @@ const logoutUser = () => {
         <font-awesome-icon :icon="faUser" class="text-white" /> Hi
         {{ userName }}
       </p>
-      <RouterLink
-        v-if="!isLoggedIn"
-        class="no-underline text-white text-md"
-        :to="{ name: 'login' }"
-        >Login</RouterLink
-      >
-      <RouterLink
-        v-if="!isLoggedIn"
-        class="no-underline text-white text-md"
-        :to="{ name: 'register' }"
-        >Register</RouterLink
-      >
+      <div class="flex gap-2">
+        <RouterLink
+          v-if="!isLoggedIn"
+          class="no-underline text-white text-md"
+          :to="{ name: 'login' }"
+          >Login</RouterLink
+        >
+        <span v-if="!isLoggedIn" class="text-white text-md">/</span>
+        <RouterLink
+          v-if="!isLoggedIn"
+          class="no-underline text-white text-md"
+          :to="{ name: 'register' }"
+          >Register</RouterLink
+        >
+      </div>
       <RouterLink
         v-if="isLoggedIn"
         @click="logoutUser"
@@ -60,7 +63,7 @@ const logoutUser = () => {
         :to="{ name: 'login' }"
       >
         <font-awesome-icon :icon="faDoorOpen" class="text-white" />
-        Logout
+        Log Out
       </RouterLink>
     </div>
   </div>

@@ -1,24 +1,30 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import PasswordTooltip from "@/components/PasswordTooltip.vue";
+import { faCheckCircle as regularCircle } from "@fortawesome/free-regular-svg-icons";
+import { faCheckCircle as solidCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faLock,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const authStore = useAuthStore();
+const router = useRouter();
 const { register } = authStore;
 const { isLoading, errors } = storeToRefs(authStore);
-const router = useRouter();
-
 const showPasswordTooltip = ref(false);
+const isPasswordVisible = ref(false);
 
 const email = ref("");
 const password = ref("");
 
-watch(errors, () => {
-  setTimeout(() => {
-    errors.value = [];
-  }, 5000);
+onMounted(() => {
+  errors.value = [];
 });
 
 function validateEmail(value) {
@@ -26,23 +32,17 @@ function validateEmail(value) {
   return regex.test(value);
 }
 
-function validateInput(input) {
+function validPassword(password) {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,}$/;
-  return regex.test(input);
+  return regex.test(password);
 }
 
 const computedEmail = computed(() => {
   return !validateEmail(email.value) ? "Please enter a valid email" : "";
 });
 
-const computedPassword = computed(() => {
-  return !validateInput(password.value)
-    ? "Password legnth should be 6 characters"
-    : "";
-});
-
 const isValidInputs = computed(() => {
-  return validateEmail(email.value) && validateInput(password.value);
+  return validateEmail(email.value) && validPassword(password.value);
 });
 
 const registerUser = async () => {
@@ -51,6 +51,43 @@ const registerUser = async () => {
     router.push({ name: "login" });
   }
 };
+
+const isValidPasswordLength = computed(() => {
+  return password.value.length >= 8;
+});
+
+const hasUppercaseAndLowercase = computed(() => {
+  const lowerRegex = /[a-z]/;
+  const upperRegex = /[A-Z]/;
+  return lowerRegex.test(password.value) && upperRegex.test(password.value);
+});
+
+const hasNumberAndSpecialChar = computed(() => {
+  const specialCharacters = /[`!@#$%^&*()_\-+=\\[\]{};':"\\|,.<>\\/?~ ]/;
+  const containsNumber = /[0-9]/.test(password.value);
+  const containsSpecialCharacter = specialCharacters.test(password.value);
+  return containsSpecialCharacter && containsNumber;
+});
+
+const passwordLengthIcon = computed(() => {
+  return isValidPasswordLength.value ? solidCircle : regularCircle;
+});
+
+const letterCaseIcon = computed(() => {
+  return hasUppercaseAndLowercase.value ? solidCircle : regularCircle;
+});
+
+const numberAndSymbolIcon = computed(() => {
+  return hasNumberAndSpecialChar.value ? solidCircle : regularCircle;
+});
+
+function togglePasswordVisibility() {
+  isPasswordVisible.value = !isPasswordVisible.value;
+}
+
+const passwordVisibilityIcon = computed(() => {
+  return isPasswordVisible.value ? faEye : faEyeSlash;
+});
 </script>
 
 <template>
@@ -59,42 +96,78 @@ const registerUser = async () => {
       class="max-w-md mx-auto shadow-lg mt-10 rounded-md md:max-w-lg lg:max-w-xl p-4 relative"
     >
       <form class="flex flex-col relative justify-center">
-        <input
-          class="h-10 mb-4 mx-8 focus:outline-none"
-          v-model="email"
-          @input="validateEmail"
-          type="email"
-          placeholder="Your@email.com"
-        />
+        <div class="flex items-center relative">
+          <font-awesome-icon
+            :icon="faEnvelope"
+            class="text-md text-blue-500 mb-4 absolute"
+          />
+          <input
+            class="h-10 mb-4 focus:outline-none pl-6 w-full border-b-2"
+            v-model="email"
+            @input="validateEmail"
+            type="email"
+            placeholder="Email Address"
+          />
+        </div>
         <p
-          class="text-red-500 text-xs absolute left-8 top-10"
+          class="text-red-500 text-xs absolute left-4 top-10"
           v-show="email.length > 0"
         >
           {{ computedEmail }}
         </p>
-        <div class="flex items-center mb-4 gap-2">
+        <div class="flex items-center relative">
           <font-awesome-icon
-            :icon="faInfoCircle"
-            @mouseover="showPasswordTooltip = true"
-            @mouseleave="showPasswordTooltip = false"
-            class="text-md text-blue-500"
+            :icon="faLock"
+            class="text-md text-blue-500 mb-4 absolute"
           />
           <input
-            class="h-10 flex-1 mr-8 ml-2 focus:outline-none"
+            class="h-10 mb-4 focus:outline-none pl-6 pr-6 w-full border-b-2"
             v-model="password"
-            type="password"
-            placeholder="YourSecretPa$$word"
+            :type="isPasswordVisible ? 'input' : 'password'"
+            placeholder="Password"
+          />
+          <font-awesome-icon
+            :icon="passwordVisibilityIcon"
+            @click="togglePasswordVisibility"
+            class="text-md text-blue-500 mb-4 absolute left"
           />
         </div>
-
-        <p
-          class="text-red-500 text-xs absolute left-8 top"
-          v-show="password.length > 0"
-        >
-          {{ computedPassword }}
-        </p>
+        <div class="text-xs mb-4">
+          <ul>
+            <li
+              class="mb-1"
+              :class="{
+                'text-green-500': isValidPasswordLength,
+                'text-gray-500': !isValidPasswordLength,
+              }"
+            >
+              <font-awesome-icon :icon="passwordLengthIcon" />
+              At least 8 characters
+            </li>
+            <li
+              class="mb-1"
+              :class="{
+                'text-green-500': hasUppercaseAndLowercase,
+                'text-gray-500': !hasUppercaseAndLowercase,
+              }"
+            >
+              <font-awesome-icon :icon="letterCaseIcon" />
+              Lowercase (a-z) and uppercase (A-Z)
+            </li>
+            <li
+              class="mb-1"
+              :class="{
+                'text-green-500': hasNumberAndSpecialChar,
+                'text-gray-500': !hasNumberAndSpecialChar,
+              }"
+            >
+              <font-awesome-icon :icon="numberAndSymbolIcon" />
+              At least one number (0-9) and one symbol
+            </li>
+          </ul>
+        </div>
         <button
-          class="hover:cursor-pointer mx-8 h-10 bg-blue-500 text-white mb-14 hover:bg-blue-300 disabled:bg-blue-200 px-8"
+          class="hover:cursor-pointer h-10 bg-blue-500 text-white mb-14 hover:bg-blue-300 disabled:bg-blue-200 w-full"
           :disabled="!isValidInputs"
           @click.prevent="registerUser"
           type="submit"
@@ -109,10 +182,10 @@ const registerUser = async () => {
         </button>
       </form>
       <p
-        class="text-red-500 text-sm font-semibold absolute px-2 bottom-12"
+        class="text-red-500 text-sm font-semibold absolute px-2 bottom-10"
         v-show="errors.length > 0"
       >
-        Unable to register user: {{ errors[0] }}
+        Registration failed: {{ errors[0] }}
       </p>
       <p class="text-center text-xs">
         Already registered?
@@ -123,21 +196,10 @@ const registerUser = async () => {
         >
       </p>
     </div>
-    <Transition name="fade">
-      <div
-        v-show="showPasswordTooltip"
-        class="absolute bg-white shadow-md p-2 rounded-md text-sm top-24 left-32 z-10"
-      >
-        <p>Password requirements:</p>
-        <ul>
-          <li>- At least 8 characters</li>
-          <li>- At least one uppercase letter</li>
-          <li>- At least one lowercase letter</li>
-          <li>- At least one number</li>
-          <li>- At least one special character</li>
-        </ul>
-      </div>
-    </Transition>
+    <PasswordTooltip
+      :password="password"
+      :show-password-tooltip="showPasswordTooltip"
+    />
   </div>
 </template>
 
@@ -146,7 +208,10 @@ const registerUser = async () => {
   top: 90px;
 }
 
-/* Opacity transition */
+.left {
+  left: 96%;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;

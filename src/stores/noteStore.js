@@ -6,7 +6,7 @@ import { useAuthStore } from "./authStore";
 
 export const useNoteStore = defineStore("note", () => {
   const authStore = useAuthStore();
-  const { token } = storeToRefs(authStore);
+  const { token, isLoggedIn } = storeToRefs(authStore);
   const notes = ref([]);
   const filterOption = ref("all");
   const baseUrl = `${config.BASE_URL}/notes`;
@@ -15,6 +15,7 @@ export const useNoteStore = defineStore("note", () => {
   const BEARER = "Bearer";
 
   const loadNotes = async () => {
+    if (!isLoggedIn) return;
     try {
       isLoadingNotes.value = true;
       const response = await axios.get(baseUrl, {
@@ -22,18 +23,27 @@ export const useNoteStore = defineStore("note", () => {
           Authorization: `${BEARER} ${token.value}`,
         },
       });
+      if (!(response.status >= 200 && response.status < 300)) {
+        handleResponseError(response);
+      }
       notes.value = response.data;
     } catch (error) {
-      handleError(error);
+      handleRequestError(error);
       console.error("Error loading notes:", error);
     } finally {
       isLoadingNotes.value = false;
     }
   };
 
-  function handleError(error) {
+  function handleRequestError(error) {
+    if (error) {
+      errors.value.push(error.message);
+    }
+  }
+
+  function handleResponseError(error) {
+    console.log(error);
     let errorCode = error.response.status;
-    console.log(error.response);
     if (errorCode === 401) {
       errors.value.push(
         "Its seems like you don't have permission to see the notes."
