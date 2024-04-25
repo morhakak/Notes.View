@@ -24,7 +24,7 @@ function toggleMenu() {
 
 <template>
   <header
-    class="bg-blue-500 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3"
+    class="bg-blue-500 relative sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3"
   >
     <div class="flex items-center justify-between px-4 py-3 sm:p-0">
       <h1 class="text-white text-2xl">
@@ -46,8 +46,20 @@ function toggleMenu() {
       </div>
     </div>
     <nav
-      :class="isOpen ? 'block' : 'hidden'"
-      class="px-2 pt-2 pb-4 sm:flex sm:p-0"
+      :class="
+        isOpen
+          ? [
+              'block',
+              'absolute',
+              'top-18',
+              'bg-blue-500',
+              'z-10',
+              'w-full',
+              'sm:w-auto',
+            ]
+          : 'hidden'
+      "
+      class="px-2 pt-2 pb-4 sm:flex sm:p-0 sm:static sm:top-0"
     >
       <p
         v-if="isLoggedIn && userName"
