@@ -7,11 +7,11 @@
 }
 
 .input {
-  @apply border-b border-transparent focus:border-black focus:outline-none mb-4;
+  @apply border-b-2 pb-2 focus:outline-none mb-4;
 }
 
 .note-item {
-  @apply h-60 p-4 flex justify-between items-center shadow-lg mb-10 hover:cursor-pointer hover:shadow-lg transition-transform duration-300 hover:scale-105;
+  @apply h-60 p-4 flex justify-center items-center shadow-lg mb-10 hover:cursor-pointer hover:shadow-lg transition-transform duration-300 hover:scale-105;
 }
 
 .action-icon {

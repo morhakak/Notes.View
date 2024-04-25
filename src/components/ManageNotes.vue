@@ -48,7 +48,7 @@ const disabledClasses = computed(() => ({
           v-model="title"
           type="text"
           placeholder="Note title"
-          class="input"
+          class="input border-b-2"
           maxlength="50"
         />
         <input
@@ -56,7 +56,7 @@ const disabledClasses = computed(() => ({
           v-model="content"
           type="text"
           placeholder="I need to..."
-          class="input"
+          class="input border-b-2"
           maxlength="100"
         />
         <button

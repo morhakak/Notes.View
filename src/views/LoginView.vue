@@ -80,7 +80,7 @@ const passwordVisibilityIcon = computed(() => {
           v-model="email"
           @input="validateEmail"
           type="email"
-          placeholder="Email Address"
+          placeholder="Email"
         />
       </div>
       <p

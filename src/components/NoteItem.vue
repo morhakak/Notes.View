@@ -16,19 +16,19 @@ defineEmits(["toggleLiked", "removeNote", "toggleDone"]);
   <div @click="$emit('toggleDone', note.id)" class="note-item">
     <div class="flex flex-col gap-2 h-full">
       <p
-        class="text-lg font-semibold break-all"
+        class="text-lg font-semibold break-keep"
         :class="{ 'line-through': note.isDone }"
       >
         {{ note.title }}
       </p>
       <p
-        class="text-sm flex-grow break-all"
+        class="text-sm flex-grow break-keep"
         :class="{ 'line-through': note.isDone }"
       >
         {{ note.content }}
       </p>
       <div class="flex gap-6 sm:w-full sm:justify-between">
-        <p class="text-xs text-gray-500 italic">{{ note.createdAt }}</p>
+        <p class="text-gray-500 text-xxs italic">{{ note.createdAt }}</p>
         <div class="flex self-end gap-2">
           <font-awesome-icon
             v-if="note.isDone"
@@ -64,3 +64,9 @@ defineEmits(["toggleLiked", "removeNote", "toggleDone"]);
     </div>
   </div>
 </template>
+
+<style scoped>
+.text-xxs {
+  font-size: 0.65rem;
+}
+</style>
