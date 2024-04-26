@@ -15,6 +15,7 @@ export const useNoteStore = defineStore("note", () => {
   const BEARER = "Bearer";
 
   const loadNotes = async () => {
+    errors.value = [];
     if (!isLoggedIn) return;
     try {
       isLoadingNotes.value = true;

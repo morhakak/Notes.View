@@ -40,9 +40,6 @@ onMounted(() => {
       class="max-w-3xl max-h-screen rounded-md mx-auto mt-8 flex flex-col relative"
     >
       <ErrorHandler v-if="hasErrors" :errors="errors" />
-      <!-- <div
-        class="grid grid-cols-2 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 gap-4"
-      > -->
       <TransitionGroup
         name="list"
         tag="ul"
@@ -57,7 +54,6 @@ onMounted(() => {
           @toggle-done="toggleIsDone"
         />
       </TransitionGroup>
-      <!-- </div> -->
       <div
         v-if="!hasErrors && !isLoadingNotes && !hasNotes"
         class="text-center font-bold text-xl"
