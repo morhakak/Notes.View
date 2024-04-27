@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center max-w-2xl mx-auto py-6">
+  <div class="flex flex-col items-center max-w-2xl mx-auto py-6 px-4">
     <div>
       <h1 class="text-3xl font-semibold mb-4">Welcome to Our Notes App!</h1>
 

@@ -24,7 +24,7 @@ function toggleMenu() {
 
 <template>
   <header
-    class="bg-blue-500 relative sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3"
+    class="bg-blue-500 relative sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3 shadow-slate-400 shadow-lg"
   >
     <div class="flex items-center justify-between px-4 py-3 sm:p-0">
       <h1 class="text-white text-2xl">
@@ -52,6 +52,8 @@ function toggleMenu() {
       </div>
     </div>
     <nav
+      v-if="true"
+      class="px-4 pt-2 pb-4 sm:flex sm:p-0 sm:static sm:top-0 sm:shadow-none"
       :class="
         isOpen
           ? [
@@ -62,14 +64,14 @@ function toggleMenu() {
               'z-10',
               'w-full',
               'sm:w-auto',
+              ' shadow-slate-400 shadow-lg',
             ]
           : 'hidden'
       "
-      class="px-4 pt-2 pb-4 sm:flex sm:p-0 sm:static sm:top-0"
     >
       <p
         v-if="isLoggedIn && userName"
-        class="block px-2 py-1 text-white rounded"
+        class="block px-2 mb-2 text-white rounded sm:px-0 sm:mr-3 sm:mb-0"
       >
         <font-awesome-icon :icon="faUser" class="text-white" /> Hello,
         <span class="font-semibold">{{ userName }}</span>
@@ -77,34 +79,36 @@ function toggleMenu() {
       </p>
       <RouterLink
         v-if="isLoggedIn"
-        class="block px-2 py-1 text-white hover:text-gray-200"
+        class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
         :to="{ name: 'home' }"
         >My Notes</RouterLink
       >
       <RouterLink
-        class="block px-2 py-1 text-white hover:text-gray-200"
+        class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
         :to="{ name: 'about' }"
         >About</RouterLink
       >
       <RouterLink
         v-if="!isLoggedIn"
-        class="block px-2 py-1 text-white hover:text-gray-200"
+        class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
         :to="{ name: 'login' }"
         >Login</RouterLink
       >
-      <span v-if="!isLoggedIn" class="text-white text-md block px-2 py-1"
+      <span
+        v-if="!isLoggedIn"
+        class="text-white text-md block px-2 py-1 sm:mb-0"
         >/</span
       >
       <RouterLink
         v-if="!isLoggedIn"
-        class="block px-2 py-1 text-white font-semibold hover:text-gray-200"
+        class="block px-2 mb-2 text-white font-semibold hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
         :to="{ name: 'register' }"
         >Register</RouterLink
       >
       <RouterLink
         v-if="isLoggedIn"
         @click="logoutUser"
-        class="block px-2 py-1 text-white font-semibold hover:text-gray-200"
+        class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mb-0"
         :to="{ name: 'login' }"
       >
         <font-awesome-icon :icon="faDoorOpen" class="text-white" />
@@ -138,7 +142,6 @@ function toggleMenu() {
   transition: all 0.3s ease;
   position: absolute;
 }
-
 .icons-enter-from,
 .icons-leave-to {
   opacity: 0;
