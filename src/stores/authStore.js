@@ -10,7 +10,12 @@ export const useAuthStore = defineStore("auth", () => {
   const token = ref(localStorage.getItem(config.LOCAL_STORAGE_KEY) || null);
   const userName = ref(null);
 
+  function resetErrors() {
+    errors.value = [];
+  }
+
   const register = async (email, password) => {
+    resetErrors();
     isLoading.value = true;
     try {
       const response = await axios.post(config.REGISTER_URL, {
@@ -32,6 +37,7 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const login = async (email, password) => {
+    resetErrors();
     isLoading.value = true;
     try {
       const response = await axios.post(config.LOGIN_URL, { email, password });
@@ -85,8 +91,8 @@ export const useAuthStore = defineStore("auth", () => {
 
   const logout = () => {
     localStorage.removeItem(config.LOCAL_STORAGE_KEY);
+    resetErrors();
     token.value = null;
-    errors.value = [];
     userName.value = null;
   };
 

@@ -36,12 +36,18 @@ function toggleMenu() {
           type="button"
           class="block text-gray-500 hover:text-white focus:text-white focus:outline-none"
         >
-          <font-awesome-icon
-            v-if="isOpen"
-            :icon="faX"
-            class="text-white h-5 w-5"
-          />
-          <font-awesome-icon v-else :icon="faBars" class="text-white h-5 w-5" />
+          <TransitionGroup name="icons" mode="ease">
+            <font-awesome-icon
+              v-if="isOpen"
+              :icon="faX"
+              class="text-white h-5 w-5"
+            />
+            <font-awesome-icon
+              v-else
+              :icon="faBars"
+              class="text-white h-5 w-5"
+            />
+          </TransitionGroup>
         </button>
       </div>
     </div>
@@ -59,7 +65,7 @@ function toggleMenu() {
             ]
           : 'hidden'
       "
-      class="px-2 pt-2 pb-4 sm:flex sm:p-0 sm:static sm:top-0"
+      class="px-4 pt-2 pb-4 sm:flex sm:p-0 sm:static sm:top-0"
     >
       <p
         v-if="isLoggedIn && userName"
@@ -111,5 +117,30 @@ function toggleMenu() {
 <style scoped>
 .router-link-exact-active {
   font-weight: bold;
+  border-left: none;
+  border-bottom: solid white 2px;
+}
+
+@media (max-width: 640px) {
+  .router-link-exact-active {
+    font-weight: bold;
+    border-bottom: none;
+    border-left: solid 4px white;
+    margin-left: -4px;
+    height: 20%;
+  }
+}
+
+.icons-enter-active {
+  transition: all 0.3s ease;
+}
+.icons-leave-active {
+  transition: all 0.3s ease;
+  position: absolute;
+}
+
+.icons-enter-from,
+.icons-leave-to {
+  opacity: 0;
 }
 </style>
