@@ -43,7 +43,7 @@ onMounted(() => {
       <TransitionGroup
         name="list"
         tag="ul"
-        class="grid grid-cols-2 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 gap-4"
+        class="justify-start grid grid-cols-2 px-4 gap-4 mb-6 sm:grid-cols-2 md:grid-cols-3"
       >
         <NoteItem
           v-for="note in filtered"

@@ -41,14 +41,14 @@ const disabledClasses = computed(() => ({
 <template>
   <div class="max-w-3xl max-h-screen rounded-md mx-auto mt-8 flex flex-col">
     <div
-      class="grid grid-cols-2 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 rounded-md shadow-xl h-60"
+      class="items-center mx-4 grid grid-cols-2 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 rounded-md shadow-lg h-60 shadow-slate-400 dark:bg-blue-950 dark:shadow-slate-700"
     >
       <div class="w-80 flex flex-col place-self-center col-span-full">
         <input
           v-model="title"
           type="text"
           placeholder="Note title"
-          class="input border-b-2"
+          class="input border-b-2 dark:bg-blue-950 dark:text-white"
           maxlength="50"
         />
         <input
@@ -56,7 +56,7 @@ const disabledClasses = computed(() => ({
           v-model="content"
           type="text"
           placeholder="I need to..."
-          class="input border-b-2"
+          class="input border-b-2 dark:bg-blue-950 dark:text-white"
           maxlength="100"
         />
         <button

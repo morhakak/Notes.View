@@ -6,6 +6,7 @@ import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faNoteSticky, faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { ref } from "vue";
+import DarkMode from "../DarkMode.vue";
 
 const store = useAuthStore();
 const { isLoggedIn, userName } = storeToRefs(store);
@@ -24,7 +25,7 @@ function toggleMenu() {
 
 <template>
   <header
-    class="bg-blue-500 relative sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3 shadow-slate-400 shadow-lg"
+    class="bg-blue-500 relative sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3 shadow-slate-400 shadow-lg dark:bg-blue-950 dark:shadow-slate-700"
   >
     <div class="flex items-center justify-between px-4 py-3 sm:p-0">
       <h1 class="text-white text-2xl">
@@ -52,8 +53,7 @@ function toggleMenu() {
       </div>
     </div>
     <nav
-      v-if="true"
-      class="px-4 pt-2 pb-4 sm:flex sm:p-0 sm:static sm:top-0 sm:shadow-none"
+      class="px-4 pt-2 pb-4 sm:flex sm:p-0 sm:static sm:top-0 sm:shadow-none dark:bg-blue-950 dark:shadow-slate-700"
       :class="
         isOpen
           ? [
@@ -69,6 +69,7 @@ function toggleMenu() {
           : 'hidden'
       "
     >
+      <DarkMode />
       <p
         v-if="isLoggedIn && userName"
         class="block px-2 mb-2 text-white rounded sm:px-0 sm:mr-3 sm:mb-0"
@@ -90,18 +91,18 @@ function toggleMenu() {
       >
       <RouterLink
         v-if="!isLoggedIn"
-        class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
+        class="block px-2 mb-2 text-md text-white hover:text-gray-200 sm:px-0 sm:mb-0"
         :to="{ name: 'login' }"
         >Login</RouterLink
       >
       <span
         v-if="!isLoggedIn"
-        class="text-white text-md block px-2 py-1 sm:mb-0"
+        class="text-white hidden text-xs px-2 py-1 sm:block sm:mb-0 sm:"
         >/</span
       >
       <RouterLink
         v-if="!isLoggedIn"
-        class="block px-2 mb-2 text-white font-semibold hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
+        class="block px-2 mb-2 text-md text-white font-semibold hover:text-gray-200 sm:px-0 sm:mb-0"
         :to="{ name: 'register' }"
         >Register</RouterLink
       >

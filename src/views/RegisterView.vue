@@ -93,16 +93,16 @@ const passwordVisibilityIcon = computed(() => {
 <template>
   <div class="relative">
     <div
-      class="max-w-md mx-auto shadow-lg mt-10 rounded-md md:max-w-lg lg:max-w-xl p-4 relative"
+      class="max-w-md mx-auto shadow-lg mt-10 rounded-md md:max-w-lg lg:max-w-xl p-4 relative dark:bg-blue-950 dark:shadow-slate-700"
     >
       <form class="flex flex-col relative justify-center">
         <div class="flex items-center relative">
           <font-awesome-icon
             :icon="faEnvelope"
-            class="text-md text-blue-500 mb-4 absolute"
+            class="text-md text-blue-500 mb-4 absolute dark:text-blue-100"
           />
           <input
-            class="h-10 mb-4 focus:outline-none pl-6 w-full border-b-2"
+            class="h-10 mb-4 focus:outline-none pl-6 w-full border-b-2 dark:bg-blue-950 dark:text-white"
             v-model="email"
             @input="validateEmail"
             type="email"
@@ -110,7 +110,7 @@ const passwordVisibilityIcon = computed(() => {
           />
         </div>
         <p
-          class="text-red-500 text-xs absolute top-10"
+          class="text-red-500 text-xs absolute top-11"
           v-show="email.length > 0"
         >
           {{ computedEmail }}
@@ -118,10 +118,10 @@ const passwordVisibilityIcon = computed(() => {
         <div class="flex items-center relative">
           <font-awesome-icon
             :icon="faLock"
-            class="text-md text-blue-500 mb-4 absolute"
+            class="text-md text-blue-500 mb-4 absolute dark:text-blue-100"
           />
           <input
-            class="h-10 mb-4 focus:outline-none pl-6 pr-6 w-full border-b-2"
+            class="h-10 mb-4 focus:outline-none pl-6 pr-6 w-full border-b-2 dark:bg-blue-950 dark:text-white"
             v-model="password"
             :type="isPasswordVisible ? 'input' : 'password'"
             placeholder="Password"
@@ -129,36 +129,36 @@ const passwordVisibilityIcon = computed(() => {
           <font-awesome-icon
             :icon="passwordVisibilityIcon"
             @click="togglePasswordVisibility"
-            class="text-md text-blue-500 mb-4 absolute left"
+            class="text-md text-blue-500 mb-4 absolute left dark:text-blue-100"
           />
         </div>
         <div class="text-xs mb-4">
           <ul>
             <li
-              class="mb-1"
+              class="mb-1 transition duration-200 ease-in"
               :class="{
                 'text-green-500': isValidPasswordLength,
-                'text-gray-500': !isValidPasswordLength,
+                'text-gray-500  dark:text-gray-200': !isValidPasswordLength,
               }"
             >
               <font-awesome-icon :icon="passwordLengthIcon" />
               At least 8 characters
             </li>
             <li
-              class="mb-1"
+              class="mb-1 transition duration-200 ease-in"
               :class="{
                 'text-green-500': hasUppercaseAndLowercase,
-                'text-gray-500': !hasUppercaseAndLowercase,
+                'text-gray-500  dark:text-gray-200': !hasUppercaseAndLowercase,
               }"
             >
               <font-awesome-icon :icon="letterCaseIcon" />
               Lowercase (a-z) and uppercase (A-Z)
             </li>
             <li
-              class="mb-1"
+              class="mb-1 transition duration-200 ease-in"
               :class="{
                 'text-green-500': hasNumberAndSpecialChar,
-                'text-gray-500': !hasNumberAndSpecialChar,
+                'text-gray-500 dark:text-gray-200': !hasNumberAndSpecialChar,
               }"
             >
               <font-awesome-icon :icon="numberAndSymbolIcon" />
@@ -167,7 +167,7 @@ const passwordVisibilityIcon = computed(() => {
           </ul>
         </div>
         <button
-          class="hover:cursor-pointer h-10 bg-blue-500 text-white mb-14 hover:bg-blue-300 disabled:bg-blue-200 w-full"
+          class="hover:cursor-pointer h-10 bg-blue-500 text-white mb-14 hover:bg-blue-300 disabled:bg-blue-200 w-full dark:bg-blue-800 dark:disabled:bg-blue-500"
           :disabled="!isValidInputs"
           @click.prevent="registerUser"
           type="submit"
@@ -187,11 +187,11 @@ const passwordVisibilityIcon = computed(() => {
       >
         Registration failed: {{ errors[0] }}
       </p>
-      <p class="text-center text-xs">
+      <p class="text-center text-xs dark:text-blue-100">
         Already registered?
         <RouterLink
           :to="{ name: 'login' }"
-          class="text-blue-900 font-semibold hover:cursor-pointer hover:text-blue-700"
+          class="text-blue-900 font-semibold hover:cursor-pointer hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-50"
           >Login</RouterLink
         >
       </p>

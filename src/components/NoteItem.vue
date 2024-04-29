@@ -28,7 +28,9 @@ defineEmits(["toggleLiked", "removeNote", "toggleDone"]);
         {{ note.content }}
       </p>
       <div class="flex gap-6 sm:w-full sm:justify-between">
-        <p class="text-gray-500 text-xxs italic">{{ note.createdAt }}</p>
+        <p class="text-gray-500 text-xxs italic dark:text-gray-200">
+          {{ note.createdAt }}
+        </p>
         <div class="flex self-end gap-2">
           <font-awesome-icon
             v-if="note.isDone"
