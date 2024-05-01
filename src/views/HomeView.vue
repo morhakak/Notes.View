@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen">
     <ManageNotes
       @add-note="add"
       @all="filterOption = 'all'"

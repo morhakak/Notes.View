@@ -91,7 +91,7 @@ const passwordVisibilityIcon = computed(() => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative min-h-screen">
     <div
       class="max-w-md mx-auto shadow-lg mt-10 rounded-md md:max-w-lg lg:max-w-xl p-4 relative dark:bg-blue-950 dark:shadow-slate-700"
     >
