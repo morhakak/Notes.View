@@ -102,7 +102,7 @@ function toggleMenu() {
       >
       <RouterLink
         v-if="!isLoggedIn"
-        class="block px-2 mb-2 text-md text-white font-semibold hover:text-gray-200 sm:px-0 sm:mb-0"
+        class="block px-2 mb-2 text-md text-white hover:text-gray-200 sm:px-0 sm:mb-0"
         :to="{ name: 'register' }"
         >Register</RouterLink
       >
