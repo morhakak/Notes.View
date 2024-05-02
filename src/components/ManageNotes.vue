@@ -2,8 +2,11 @@
 import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useNoteStore } from "../stores/noteStore.js";
-import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
-import { faCheckSquare as regularSquare } from "@fortawesome/free-regular-svg-icons";
+import {
+  faHeart as regularHeart,
+  faCheckSquare as regularSquare,
+} from "@fortawesome/free-regular-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const emit = defineEmits(["addNote", "all", "liked", "done"]);
 const content = defineModel("content");
@@ -61,7 +64,7 @@ const disabledClasses = computed(() => ({
         />
         <button
           @click.prevent="onAddNote"
-          class="rounded-2xl bg-blue-500 hover:bg-blue-300 text-white py-2 px-4 relative cursor-pointer"
+          class="rounded-lg bg-blue-500 hover:bg-blue-300 text-white py-2 px-4 relative cursor-pointer"
           :class="disabledClasses"
           :disabled="!content"
           @mouseover="onMouseHover"
@@ -74,6 +77,7 @@ const disabledClasses = computed(() => ({
             src="../assets/spinners/spinner.gif"
             alt=""
           />
+          <font-awesome-icon :icon="faPlus" class="ml-2" />
           Add Note
         </button>
         <div class="flex mt-4 gap-6">
