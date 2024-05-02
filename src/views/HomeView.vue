@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div>
     <ManageNotes
       @add-note="add"
       @all="filterOption = 'all'"
@@ -36,9 +36,7 @@ onMounted(() => {
       v-model:content="inputContent"
       v-model:title="noteTitle"
     />
-    <div
-      class="max-w-3xl max-h-screen rounded-md mx-auto mt-8 flex flex-col relative"
-    >
+    <div class="max-w-3xl rounded-md mx-auto mt-8 flex flex-col relative">
       <ErrorHandler v-if="hasErrors" :errors="errors" />
       <TransitionGroup
         name="list"
@@ -68,6 +66,7 @@ onMounted(() => {
 .list-enter-active {
   transition: all 0.4s ease;
 }
+
 .list-leave-active {
   transition: all 0.4s ease;
   position: absolute;
