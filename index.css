@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .custom-filter-button {
-  @apply rounded-lg text-white flex justify-center items-center py-2 px-4 w-2/4 cursor-pointer transition-transform duration-300 hover:scale-95;
+  @apply rounded-lg text-white flex justify-center items-center py-2 px-4 w-2/4 cursor-pointer transition-transform duration-300 hover:scale-95 disabled:transform-none disabled:cursor-not-allowed;
 }
 
 .input {

@@ -112,7 +112,7 @@ export const useNoteStore = defineStore("note", () => {
   });
 
   const addToNotes = async (title, content) => {
-    if (!content) return;
+    if (!title) return;
     const note = {
       title,
       content,

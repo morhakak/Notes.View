@@ -36,18 +36,18 @@ const onAddNote = () => {
 };
 
 const disabledClasses = computed(() => ({
-  "tooltip-btn disabled:bg-blue-300 disabled:cursor-not-allowed cursor-pointer":
-    !content.value,
+  "disabled:bg-blue-300 disabled:cursor-not-allowed ": !title.value,
 }));
 </script>
 
 <template>
-  <div class="max-w-3xl max-h-screen rounded-md mx-auto mt-8 flex flex-col">
+  <div class="max-w-3xl rounded-md mx-auto mt-8 flex flex-col">
     <div
-      class="items-center mx-4 grid grid-cols-2 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 rounded-md shadow-lg h-60 shadow-slate-400 dark:bg-blue-950 dark:shadow-slate-700"
+      class="items-center mx-4 grid grid-cols-2 p-4 px-4 mb-6 sm:grid-cols-2 md:grid-cols-3 rounded-md shadow-lg h-60 shadow-slate-400 dark:bg-blue-950 dark:shadow-slate-700"
     >
       <div class="w-80 flex flex-col place-self-center col-span-full">
         <input
+          @keyup.enter.prevent="onAddNote"
           v-model="title"
           type="text"
           placeholder="Note title"
@@ -64,9 +64,9 @@ const disabledClasses = computed(() => ({
         />
         <button
           @click.prevent="onAddNote"
-          class="rounded-lg bg-blue-500 hover:bg-blue-300 text-white py-2 px-4 relative cursor-pointer"
+          class="rounded-lg bg-blue-500 hover:bg-blue-300 text-white py-2 px-4 relative cursor-pointer disabled:cursor-not-allowed transition-transform duration-300 hover:scale-95 transfo disabled:transform-none"
           :class="disabledClasses"
-          :disabled="!content"
+          :disabled="!title"
           @mouseover="onMouseHover"
           @mouseleave="onMouseLeave"
           ref="addButtonRef"
