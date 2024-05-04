@@ -1,6 +1,5 @@
 <script setup>
 import { useDark, useToggle } from "@vueuse/core";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 </script>
@@ -14,10 +13,14 @@ const toggleDark = useToggle(isDark);
       <TransitionGroup name="icons" mode="ease">
         <font-awesome-icon
           v-if="isDark"
-          :icon="faSun"
+          :icon="['fas', 'sun']"
           class="text-white h-5 w-5"
         />
-        <font-awesome-icon v-else :icon="faMoon" class="text-white h-5 w-5" />
+        <font-awesome-icon
+          v-else
+          :icon="['fas', 'moon']"
+          class="text-white h-5 w-5"
+        />
       </TransitionGroup>
     </button>
   </div>

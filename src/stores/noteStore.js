@@ -1,29 +1,24 @@
 import { defineStore, storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import axios from "axios";
-import { config } from "../config";
+import { appConfig } from "../config";
 import { useAuthStore } from "./authStore";
 
 export const useNoteStore = defineStore("note", () => {
   const authStore = useAuthStore();
-  const { token, isLoggedIn } = storeToRefs(authStore);
+  const { isLoggedIn } = storeToRefs(authStore);
   const notes = ref([]);
   const filterOption = ref("all");
-  const baseUrl = `${config.BASE_URL}/notes`;
+  const baseUrl = `${appConfig.BASE_URL}/notes`;
   const errors = ref([]);
   const isLoadingNotes = ref(false);
-  const BEARER = "Bearer";
 
   const loadNotes = async () => {
     errors.value = [];
     if (!isLoggedIn) return;
     try {
       isLoadingNotes.value = true;
-      const response = await axios.get(baseUrl, {
-        headers: {
-          Authorization: `${BEARER} ${token.value}`,
-        },
-      });
+      const response = await axios.get(baseUrl);
       if (!(response.status >= 200 && response.status < 300)) {
         handleResponseError(response);
       }
@@ -60,11 +55,7 @@ export const useNoteStore = defineStore("note", () => {
 
   const removeFromNotes = async (noteId) => {
     try {
-      const response = await axios.delete(`${baseUrl}/${noteId}`, {
-        headers: {
-          Authorization: `${BEARER} ${token.value}`,
-        },
-      });
+      const response = await axios.delete(`${baseUrl}/${noteId}`);
       if (response.status >= 200 && response.status < 300) {
         notes.value = notes.value.filter((note) => note.id !== noteId);
       }
@@ -79,11 +70,7 @@ export const useNoteStore = defineStore("note", () => {
       [propertyName]: toggleValue,
     };
     try {
-      await axios.put(`${baseUrl}/${note.id}/${propertyName}`, updateNote, {
-        headers: {
-          Authorization: `${BEARER} ${token.value}`,
-        },
-      });
+      await axios.put(`${baseUrl}/${note.id}/${propertyName}`, updateNote);
       note[propertyName] = toggleValue;
     } catch (error) {
       errors.value.push("Something went wrong, try again later.");
@@ -118,11 +105,7 @@ export const useNoteStore = defineStore("note", () => {
       content,
     };
     try {
-      const response = await axios.post(baseUrl, note, {
-        headers: {
-          Authorization: `${BEARER} ${token.value}`,
-        },
-      });
+      const response = await axios.post(baseUrl, note);
       if (response.status === 200) {
         notes.value.push(response.data);
       }

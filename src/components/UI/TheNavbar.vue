@@ -2,11 +2,8 @@
 import { RouterLink, useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/authStore.js";
 import { storeToRefs } from "pinia";
-import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faNoteSticky, faBars, faX } from "@fortawesome/free-solid-svg-icons";
 import { ref } from "vue";
-import DarkMode from "../DarkMode.vue";
+import DarkModeToggle from "../DarkModeToggle.vue";
 
 const store = useAuthStore();
 const { isLoggedIn, userName } = storeToRefs(store);
@@ -29,7 +26,8 @@ function toggleMenu() {
   >
     <div class="flex items-center justify-between px-4 py-3 sm:p-0">
       <h1 class="text-white text-2xl">
-        <font-awesome-icon :icon="faNoteSticky" class="text-white" /> Notes
+        <font-awesome-icon :icon="['fas', 'note-sticky']" class="text-white" />
+        Notes
       </h1>
       <div class="sm:hidden">
         <button
@@ -37,15 +35,15 @@ function toggleMenu() {
           type="button"
           class="block text-gray-500 hover:text-white focus:text-white focus:outline-none"
         >
-          <TransitionGroup name="icons" mode="ease">
+          <TransitionGroup name="icons">
             <font-awesome-icon
               v-if="isOpen"
-              :icon="faX"
+              :icon="['fas', 'x']"
               class="text-white h-5 w-5"
             />
             <font-awesome-icon
               v-else
-              :icon="faBars"
+              :icon="['fas', 'bars']"
               class="text-white h-5 w-5"
             />
           </TransitionGroup>
@@ -69,12 +67,12 @@ function toggleMenu() {
           : 'hidden'
       "
     >
-      <DarkMode />
+      <DarkModeToggle />
       <p
         v-if="isLoggedIn && userName"
         class="block px-2 mb-2 text-white rounded sm:px-0 sm:mr-3 sm:mb-0"
       >
-        <font-awesome-icon :icon="faUser" class="text-white" /> Hello,
+        <font-awesome-icon :icon="['fas', 'user']" class="text-white" /> Hello,
         <span class="font-semibold">{{ userName }}</span>
         <span class="hidden sm:inline-block"> &nbsp; &nbsp;|</span>
       </p>
@@ -112,7 +110,7 @@ function toggleMenu() {
         class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mb-0"
         :to="{ name: 'login' }"
       >
-        <font-awesome-icon :icon="faDoorOpen" class="text-white" />
+        <font-awesome-icon :icon="['fas', 'door-open']" class="text-white" />
         Log Out
       </RouterLink>
     </nav>

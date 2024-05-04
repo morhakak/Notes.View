@@ -2,11 +2,6 @@
 import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useNoteStore } from "../stores/noteStore.js";
-import {
-  faHeart as regularHeart,
-  faCheckSquare as regularSquare,
-} from "@fortawesome/free-regular-svg-icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const emit = defineEmits(["addNote", "all", "liked", "done"]);
 const content = defineModel("content");
@@ -77,7 +72,7 @@ const disabledClasses = computed(() => ({
             src="../assets/spinners/spinner.gif"
             alt=""
           />
-          <font-awesome-icon :icon="faPlus" class="ml-2" />
+          <font-awesome-icon icon="fa-plus" class="ml-2" />
           Add Note
         </button>
         <div class="flex mt-4 gap-6">
@@ -95,7 +90,10 @@ const disabledClasses = computed(() => ({
             :disabled="!hasNotes || (hasNotes && !hasDoneNotes)"
           >
             Done
-            <font-awesome-icon :icon="regularSquare" class="text-lg ml-2" />
+            <font-awesome-icon
+              :icon="['far', 'check-square']"
+              class="text-lg ml-2"
+            />
           </button>
           <button
             @click.prevent="$emit('liked')"
@@ -103,10 +101,7 @@ const disabledClasses = computed(() => ({
             :disabled="!hasNotes || (hasNotes && !hasLikedNotes)"
           >
             Liked
-            <font-awesome-icon
-              :icon="regularHeart"
-              class="regular-heart ml-2"
-            />
+            <font-awesome-icon :icon="['far', 'heart']" class="ml-2" />
           </button>
         </div>
       </div>
