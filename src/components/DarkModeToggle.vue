@@ -10,7 +10,7 @@ const toggleDark = useToggle(isDark);
       @click="toggleDark()"
       class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
     >
-      <TransitionGroup name="icons" mode="ease">
+      <TransitionGroup name="icons">
         <font-awesome-icon
           v-if="isDark"
           :icon="['fas', 'sun']"

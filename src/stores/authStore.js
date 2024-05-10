@@ -45,7 +45,7 @@ export const useAuthStore = defineStore("auth", () => {
         password,
       });
       if (response.status >= 200 && response.status < 300) {
-        handleLoginSuccess(response.data.data);
+        handleLoginSuccess(response.data.token);
         return true;
       } else {
         handleErrorResponse(response);
@@ -60,9 +60,10 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  const handleLoginSuccess = (tokenData) => {
-    token.value = tokenData;
-    const decodedToken = jwtDecode(tokenData);
+  const handleLoginSuccess = (jwtToken) => {
+    token.value = jwtToken;
+    localStorage.setItem(appConfig.LOCAL_STORAGE_KEY, token.value);
+    const decodedToken = jwtDecode(jwtToken);
     updateUserName(decodedToken);
   };
 
