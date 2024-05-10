@@ -11,7 +11,7 @@
 }
 
 .note-item {
-  @apply h-60 p-4 flex justify-center items-center shadow-lg mb-10 hover:cursor-pointer hover:shadow-lg transition-transform duration-300 hover:scale-105 dark:bg-blue-950 dark:text-white dark:shadow-slate-800;
+  @apply h-60 p-4 flex justify-center items-center shadow-lg mb-10 hover:cursor-pointer hover:shadow-lg transition-transform duration-300 hover:scale-105 dark:bg-blue-950 dark:text-white dark:shadow-slate-800 rounded-md;
 }
 
 .action-icon {

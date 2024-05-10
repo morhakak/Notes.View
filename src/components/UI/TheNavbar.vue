@@ -22,7 +22,7 @@ function toggleMenu() {
 
 <template>
   <header
-    class="bg-blue-500 relative sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3 shadow-slate-400 shadow-lg dark:bg-blue-950 dark:shadow-slate-700"
+    class="bg-blue-500 relative sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3 shadow-slate-300 shadow-lg dark:bg-blue-950 dark:shadow-slate-700"
   >
     <div class="flex items-center justify-between px-4 py-3 sm:p-0">
       <h1 class="text-white text-2xl">
