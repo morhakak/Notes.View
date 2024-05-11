@@ -9,6 +9,7 @@ export const useAuthStore = defineStore("auth", () => {
   const errors = ref([]);
   const token = ref(localStorage.getItem(appConfig.LOCAL_STORAGE_KEY) || null);
   const userName = ref(null);
+  const isAdmin = ref(false);
 
   function resetErrors() {
     errors.value = [];
@@ -64,7 +65,22 @@ export const useAuthStore = defineStore("auth", () => {
     token.value = jwtToken;
     localStorage.setItem(appConfig.LOCAL_STORAGE_KEY, token.value);
     const decodedToken = jwtDecode(jwtToken);
+    console.log("decode token", decodedToken);
     updateUserName(decodedToken);
+    getIsAdmin(decodedToken);
+  };
+
+  const getIsAdmin = (decodedToken) => {
+    try {
+      const rolesFromToken =
+        decodedToken[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ];
+      console.log("roles from auth:", rolesFromToken);
+      isAdmin.value = rolesFromToken.includes("Admin");
+    } catch (error) {
+      isAdmin.value = false;
+    }
   };
 
   const handleErrorResponse = (response) => {
@@ -97,6 +113,7 @@ export const useAuthStore = defineStore("auth", () => {
     resetErrors();
     token.value = null;
     userName.value = null;
+    isAdmin.value = false;
   };
 
   const isLoggedIn = computed(() => {
@@ -108,6 +125,7 @@ export const useAuthStore = defineStore("auth", () => {
     if (token.value) {
       const decodedToken = jwtDecode(token.value);
       updateUserName(decodedToken);
+      getIsAdmin(decodedToken);
     }
   }
 
@@ -130,5 +148,6 @@ export const useAuthStore = defineStore("auth", () => {
     errors,
     token,
     userName,
+    isAdmin,
   };
 });

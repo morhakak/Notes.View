@@ -6,7 +6,7 @@ import { ref } from "vue";
 import DarkModeToggle from "../DarkModeToggle.vue";
 
 const store = useAuthStore();
-const { isLoggedIn, userName } = storeToRefs(store);
+const { isLoggedIn, userName, isAdmin } = storeToRefs(store);
 const router = useRouter();
 const isOpen = ref(false);
 
@@ -77,10 +77,16 @@ function toggleMenu() {
         <span class="hidden sm:inline-block"> &nbsp; &nbsp;|</span>
       </p>
       <RouterLink
+        v-if="isAdmin"
+        class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
+        :to="{ name: 'dashboard' }"
+        >Dashboard</RouterLink
+      >
+      <RouterLink
         v-if="isLoggedIn"
         class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
         :to="{ name: 'home' }"
-        >My Notes</RouterLink
+        >{{ isAdmin ? "Notes" : "My Notes" }}</RouterLink
       >
       <RouterLink
         class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"

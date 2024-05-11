@@ -1,16 +1,19 @@
 <script setup>
 import { useNoteStore } from "@/stores/noteStore";
+import { useAuthStore } from "@/stores/authStore";
 import { storeToRefs } from "pinia";
 import { ref, onMounted } from "vue";
 import NoteItem from "../components/NoteItem.vue";
 import ManageNotes from "../components/ManageNotes.vue";
 import ErrorHandler from "../components/ErrorHandler.vue";
 
-const store = useNoteStore();
+const notesStore = useNoteStore();
 let { addToNotes, removeFromNotes, toggleIsLiked, loadNotes, toggleIsDone } =
-  store;
+  notesStore;
 const { filtered, filterOption, errors, hasNotes, hasErrors, isLoadingNotes } =
-  storeToRefs(store);
+  storeToRefs(notesStore);
+
+const { isAdmin } = storeToRefs(useAuthStore());
 
 const noteTitle = ref("");
 const inputContent = ref("");
@@ -29,6 +32,7 @@ onMounted(() => {
 <template>
   <div>
     <ManageNotes
+      v-if="!isAdmin"
       @add-note="add"
       @all="filterOption = 'all'"
       @liked="filterOption = 'liked'"

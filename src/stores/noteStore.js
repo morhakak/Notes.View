@@ -6,7 +6,7 @@ import { useAuthStore } from "./authStore";
 
 export const useNoteStore = defineStore("note", () => {
   const authStore = useAuthStore();
-  const { isLoggedIn } = storeToRefs(authStore);
+  const { isLoggedIn, isAdmin } = storeToRefs(authStore);
   const notes = ref([]);
   const filterOption = ref("all");
   const baseUrl = `${appConfig.BASE_URL}/notes`;
@@ -18,7 +18,9 @@ export const useNoteStore = defineStore("note", () => {
     if (!isLoggedIn) return;
     try {
       isLoadingNotes.value = true;
-      const response = await axios.get(baseUrl);
+      console.log("Is Admin from note store:", isAdmin.value);
+      const path = isAdmin.value ? `${baseUrl}/admin` : baseUrl;
+      const response = await axios.get(path);
       if (!(response.status >= 200 && response.status < 300)) {
         handleResponseError(response);
       }
@@ -99,7 +101,10 @@ export const useNoteStore = defineStore("note", () => {
   });
 
   const addToNotes = async (title, content) => {
-    if (!title) return;
+    if (!title) {
+      errors.value.push("Please enter a title");
+      return;
+    }
     const note = {
       title,
       content,
@@ -147,5 +152,6 @@ export const useNoteStore = defineStore("note", () => {
     errors,
     hasErrors,
     isLoadingNotes,
+    notes,
   };
 });
