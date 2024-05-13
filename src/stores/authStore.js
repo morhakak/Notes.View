@@ -65,7 +65,6 @@ export const useAuthStore = defineStore("auth", () => {
     token.value = jwtToken;
     localStorage.setItem(appConfig.LOCAL_STORAGE_KEY, token.value);
     const decodedToken = jwtDecode(jwtToken);
-    console.log("decode token", decodedToken);
     updateUserName(decodedToken);
     getIsAdmin(decodedToken);
   };
@@ -76,7 +75,6 @@ export const useAuthStore = defineStore("auth", () => {
         decodedToken[
           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         ];
-      console.log("roles from auth:", rolesFromToken);
       isAdmin.value = rolesFromToken.includes("Admin");
     } catch (error) {
       isAdmin.value = false;

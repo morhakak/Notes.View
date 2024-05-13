@@ -8,7 +8,7 @@ defineEmits(["toggleLiked", "removeNote", "toggleDone"]);
 
 <template>
   <div @click="$emit('toggleDone', note.id)" class="note-item">
-    <div class="flex flex-col gap-2 h-full">
+    <div class="flex flex-col gap-2 h-full w-full">
       <p
         class="text-lg font-semibold break-keep"
         :class="{ 'line-through': note.isDone }"

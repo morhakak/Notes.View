@@ -83,10 +83,10 @@ function toggleMenu() {
         >Dashboard</RouterLink
       >
       <RouterLink
-        v-if="isLoggedIn"
+        v-if="isLoggedIn && !isAdmin"
         class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"
         :to="{ name: 'home' }"
-        >{{ isAdmin ? "Notes" : "My Notes" }}</RouterLink
+        >My Notes</RouterLink
       >
       <RouterLink
         class="block px-2 mb-2 text-white hover:text-gray-200 sm:px-0 sm:mr-3 sm:mb-0"

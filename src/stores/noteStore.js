@@ -18,7 +18,6 @@ export const useNoteStore = defineStore("note", () => {
     if (!isLoggedIn) return;
     try {
       isLoadingNotes.value = true;
-      console.log("Is Admin from note store:", isAdmin.value);
       const path = isAdmin.value ? `${baseUrl}/admin` : baseUrl;
       const response = await axios.get(path);
       if (!(response.status >= 200 && response.status < 300)) {
@@ -138,6 +137,18 @@ export const useNoteStore = defineStore("note", () => {
     return errors.value.length > 0;
   });
 
+  const numOfNotes = computed(() => {
+    return notes.value.length;
+  });
+
+  const numOfLikedNotes = computed(() => {
+    return notes.value.filter((note) => note.isLiked).length;
+  });
+
+  const numOfDoneNotes = computed(() => {
+    return notes.value.filter((note) => note.isDone).length;
+  });
+
   return {
     addToNotes,
     removeFromNotes,
@@ -153,5 +164,8 @@ export const useNoteStore = defineStore("note", () => {
     hasErrors,
     isLoadingNotes,
     notes,
+    numOfNotes,
+    numOfLikedNotes,
+    numOfDoneNotes,
   };
 });
