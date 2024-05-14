@@ -38,11 +38,10 @@ export const useDashboardStore = defineStore("dashboard", () => {
   const deleteUser = async (userId) => {
     resetErrors();
     try {
-      const response = await axios.delete(appConfig.DASHBOARD_USERS, {
-        userId,
-      });
+      const path = `${appConfig.DASHBOARD_URL}/${userId}`;
+      const response = await axios.delete(path);
       if (response.status >= 200 && response.status < 300) {
-        return true;
+        users.value = users.value.filter((user) => user.id !== userId);
       } else {
         handleErrorResponse(response);
         return false;

@@ -10,7 +10,7 @@
       <p class="w-36 truncate">{{ user.email }}</p>
     </div>
     <div class="flex items-center">
-      <p class="w-36 truncate">{{ user.roles.join(",") }}</p>
+      <p class="w-36 truncate">{{ user.roles.join(", ") }}</p>
       <font-awesome-icon
         @click="$emit('deleteUser', user.id)"
         :icon="['fas', 'trash-can']"

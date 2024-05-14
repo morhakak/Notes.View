@@ -10,11 +10,11 @@ const router = useRouter();
 onMounted(() => {
   store.getTokenFromStorage();
 
-  if (store.isLoggedIn) {
-    router.push({ name: "home" });
-  } else {
-    router.push({ name: "login" });
-  }
+  // if (store.isLoggedIn) {
+  //   router.push({ name: "home" });
+  // } else {
+  //   router.push({ name: "login" });
+  // }
 });
 </script>
 

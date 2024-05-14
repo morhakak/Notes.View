@@ -10,14 +10,14 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: NotesView,
-      beforeEnter: (to, from, next) => {
+      beforeEnter: (_, from, next) => {
         const { isAdmin, isLoggedIn } = storeToRefs(useAuthStore());
-        if (isAdmin.value) {
-          if (from.name == "dashboard") {
-            next();
-          } else next({ name: "dashboard" });
+        if (isAdmin.value && from.name !== "dashboard") {
+          next();
         } else if (isLoggedIn) {
           next();
+        } else {
+          next({ name: "login" });
         }
       },
     },
@@ -30,6 +30,14 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: () => import("../views/LoginView.vue"),
+      beforeEnter: (to, from, next) => {
+        const { isLoggedIn } = storeToRefs(useAuthStore());
+        if (isLoggedIn.value) {
+          next({ name: "home" });
+        } else {
+          next();
+        }
+      },
     },
     {
       path: "/register",

@@ -6,5 +6,6 @@ export const appConfig = {
   REGISTER_URL: `${URL}/auth/register`,
   LOGIN_URL: `${URL}/auth/login`,
   LOCAL_STORAGE_KEY: "notesAppToken",
+  DASHBOARD_URL,
   DASHBOARD_USERS: `${DASHBOARD_URL}/users`,
 };
