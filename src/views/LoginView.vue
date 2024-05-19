@@ -15,9 +15,11 @@ const { login } = authStore;
 const { isLoading, errors } = storeToRefs(authStore);
 const router = useRouter();
 const isPasswordVisible = ref(false);
+const emailInput = ref(null);
 
 onMounted(() => {
   errors.value = [];
+  emailInput.value.focus();
 });
 
 const email = ref("");
@@ -75,6 +77,7 @@ const passwordVisibilityIcon = computed(() => {
           @input="validateEmail"
           type="email"
           placeholder="Email"
+          ref="emailInput"
         />
       </div>
       <p

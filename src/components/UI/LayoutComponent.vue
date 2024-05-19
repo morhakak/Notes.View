@@ -1,7 +1,3 @@
-<script setup>
-import TheFooter from "./TheFooter.vue";
-import TheNavbar from "./TheNavbar.vue";
-</script>
 <template>
   <div class="flex flex-col min-h-screen">
     <TheNavbar />
@@ -11,3 +7,8 @@ import TheNavbar from "./TheNavbar.vue";
     <TheFooter />
   </div>
 </template>
+
+<script setup>
+import TheFooter from "./TheFooter.vue";
+import TheNavbar from "./TheNavbar.vue";
+</script>

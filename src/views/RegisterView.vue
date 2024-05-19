@@ -19,12 +19,14 @@ const { register } = authStore;
 const { isLoading, errors } = storeToRefs(authStore);
 const showPasswordTooltip = ref(false);
 const isPasswordVisible = ref(false);
+const emailInput = ref(null);
 
 const email = ref("");
 const password = ref("");
 
 onMounted(() => {
   errors.value = [];
+  emailInput.value.focus();
 });
 
 function validateEmail(value) {
@@ -107,6 +109,7 @@ const passwordVisibilityIcon = computed(() => {
             @input="validateEmail"
             type="email"
             placeholder="Email"
+            ref="emailInput"
           />
         </div>
         <p

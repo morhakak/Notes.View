@@ -25,6 +25,9 @@ const router = createRouter({
       path: "/about",
       name: "about",
       component: () => import("../views/AboutView.vue"),
+      meta: {
+        breadcrumb: "About",
+      },
     },
     {
       path: "/login",
@@ -48,21 +51,33 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: () => import("../views/DashboardView.vue"),
+      meta: {
+        breadcrumb: "Dashboard",
+      },
     },
     {
       path: "/dashboard/stats",
       name: "stats",
       component: () => import("../views/StatisticsView.vue"),
+      meta: {
+        breadcrumb: "Stats",
+      },
     },
     {
       path: "/dashboard/users",
       name: "users",
       component: () => import("../views/ManageUsersView.vue"),
+      meta: {
+        breadcrumb: "Users Managament",
+      },
     },
     {
       path: "/dashboard/notes",
       name: "notes",
       component: () => import("../views/ManageNotesView.vue"),
+      meta: {
+        breadcrumb: "Notes Managament",
+      },
     },
     {
       path: "/:catchAll(.*)",

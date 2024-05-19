@@ -1,20 +1,13 @@
 <script setup>
-import { RouterView, useRouter } from "vue-router";
+import { RouterView } from "vue-router";
 import { useAuthStore } from "./stores/authStore.js";
 import { onMounted } from "vue";
 import LayoutComponent from "./components/UI/LayoutComponent.vue";
 
 const store = useAuthStore();
-const router = useRouter();
 
 onMounted(() => {
   store.getTokenFromStorage();
-
-  // if (store.isLoggedIn) {
-  //   router.push({ name: "home" });
-  // } else {
-  //   router.push({ name: "login" });
-  // }
 });
 </script>
 
